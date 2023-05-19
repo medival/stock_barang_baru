@@ -52,7 +52,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 col-sm-12 text-center mt-5 mb-3">
-               
+
                 <h3 class="text-white mt-2">Aplikasi Persedian Barang</h3>
 
                 <?php
@@ -61,7 +61,7 @@
                     ' . $this->session->flashdata('alert') . '
                   </div></div>';
                 }
-                ?>
+    ?>
 
             </div>
             <div class="col-md-4 col-sm-12 offset-md-4">

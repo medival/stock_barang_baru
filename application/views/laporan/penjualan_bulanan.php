@@ -53,7 +53,7 @@ if ($this->session->flashdata('alert')) {
 
                     echo '<option value="' . $i . '" ' . $selected . '>' . $i . '</option>';
                 }
-                ?>
+?>
             </select>
         </div>
         <button type="submit" class="btn btn-primary mb-2 btn-sm" name="cari" value="Search">
@@ -86,60 +86,60 @@ if ($this->session->flashdata('alert')) {
     <tbody>
         <?php
         $i = 1;
-        $row_penjualan = 1;
-        $row_tanggal = 1;
+$row_penjualan = 1;
+$row_tanggal = 1;
 
-        if ($data->num_rows() > 0) {
-            $total = 0;
+if ($data->num_rows() > 0) {
+    $total = 0;
 
-            foreach ($data->result() as $dt) {
-                echo '<tr>';
-                if ($row_tanggal == 1) :
-                    echo '<td rowspan="' . $dt->row_tanggal . '">' . $i++ . '</td>';
-                    echo '<td rowspan="' . $dt->row_tanggal . '">' . tanggal_indo($dt->tgl_penjualan) . '</td>';
-                endif;
-                if ($row_penjualan == 1) :
+    foreach ($data->result() as $dt) {
+        echo '<tr>';
+        if ($row_tanggal == 1) :
+            echo '<td rowspan="' . $dt->row_tanggal . '">' . $i++ . '</td>';
+            echo '<td rowspan="' . $dt->row_tanggal . '">' . tanggal_indo($dt->tgl_penjualan) . '</td>';
+        endif;
+        if ($row_penjualan == 1) :
 
-                    echo '<td rowspan="' . $dt->row_penjualan . '">' . $dt->id_penjualan . '</td>';
-                    echo '<td rowspan="' . $dt->row_penjualan . '">' . $dt->nama_pembeli . '</td>';
-                endif;
-                echo '<td>' . $dt->nama_barang . '</td>';
-                echo '<td>' . $dt->brand . '</td>';
-                echo '<td>' . $dt->qty . '</td>';
-                echo '<td><span class="float-left">Rp.</span><span class="float-right">' . number_format($dt->harga_beli, 0, ',', '.') . '</span></td>';
-                echo '<td><span class="float-left">Rp.</span><span class="float-right">' . number_format($dt->harga_jual, 0, ',', '.') . '</span></td>';
-                echo '<td><span class="float-left">Rp.</span><span class="float-right">' . number_format((($dt->harga_jual - $dt->harga_beli) * $dt->qty), 0, ',', '.') . '</span></td>';
-                echo '<td><span class="float-left">Rp.</span><span class="float-right">' . number_format(($dt->harga * $dt->qty), 0, ',', '.') . '</span></td>';
-                echo '</tr>';
-                if ($row_penjualan != $dt->row_penjualan) {
-                    $row_penjualan++;
-                } else {
-                    $row_penjualan = 1;
-                }
-
-                if ($row_tanggal != $dt->row_tanggal) {
-                    $row_tanggal++;
-                } else {
-                    $row_tanggal = 1;
-                }
-
-                $total += ($dt->harga * $dt->qty);
-                $totalLaba += (($dt->harga_jual - $dt->harga_beli) * $dt->qty);
-            }
-
-            echo '<tr>';
-            echo '<td colspan="10" class="text-center"><b>Total Pemasukan</b></td>';
-            echo '<td><b><span class="float-left">Rp.</span><span class="float-right">' . number_format($total, 0, ',', '.') . '</span></b></td>';
-            echo '</tr>';
-            echo '<tr>';
-            echo '<td colspan="10" class="text-center"><b> Laba Bulan ini </b></td>';
-            echo '<td><b><span class="float-left">Rp.</span><span class="float-right">' . number_format($totalLaba, 0, ',', '.') . '</span></b></td>';
-            echo '</tr>';
+            echo '<td rowspan="' . $dt->row_penjualan . '">' . $dt->id_penjualan . '</td>';
+            echo '<td rowspan="' . $dt->row_penjualan . '">' . $dt->nama_pembeli . '</td>';
+        endif;
+        echo '<td>' . $dt->nama_barang . '</td>';
+        echo '<td>' . $dt->brand . '</td>';
+        echo '<td>' . $dt->qty . '</td>';
+        echo '<td><span class="float-left">Rp.</span><span class="float-right">' . number_format($dt->harga_beli, 0, ',', '.') . '</span></td>';
+        echo '<td><span class="float-left">Rp.</span><span class="float-right">' . number_format($dt->harga_jual, 0, ',', '.') . '</span></td>';
+        echo '<td><span class="float-left">Rp.</span><span class="float-right">' . number_format((($dt->harga_jual - $dt->harga_beli) * $dt->qty), 0, ',', '.') . '</span></td>';
+        echo '<td><span class="float-left">Rp.</span><span class="float-right">' . number_format(($dt->harga * $dt->qty), 0, ',', '.') . '</span></td>';
+        echo '</tr>';
+        if ($row_penjualan != $dt->row_penjualan) {
+            $row_penjualan++;
         } else {
-            echo '<tr>';
-            echo '<td colspan="11" class="text-center">Data tidak ditemukan</td>';
-            echo '</tr>';
+            $row_penjualan = 1;
         }
-        ?>
+
+        if ($row_tanggal != $dt->row_tanggal) {
+            $row_tanggal++;
+        } else {
+            $row_tanggal = 1;
+        }
+
+        $total += ($dt->harga * $dt->qty);
+        $totalLaba += (($dt->harga_jual - $dt->harga_beli) * $dt->qty);
+    }
+
+    echo '<tr>';
+    echo '<td colspan="10" class="text-center"><b>Total Pemasukan</b></td>';
+    echo '<td><b><span class="float-left">Rp.</span><span class="float-right">' . number_format($total, 0, ',', '.') . '</span></b></td>';
+    echo '</tr>';
+    echo '<tr>';
+    echo '<td colspan="10" class="text-center"><b> Laba Bulan ini </b></td>';
+    echo '<td><b><span class="float-left">Rp.</span><span class="float-right">' . number_format($totalLaba, 0, ',', '.') . '</span></b></td>';
+    echo '</tr>';
+} else {
+    echo '<tr>';
+    echo '<td colspan="11" class="text-center">Data tidak ditemukan</td>';
+    echo '</tr>';
+}
+?>
     </tbody>
 </table>

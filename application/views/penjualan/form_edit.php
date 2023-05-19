@@ -85,7 +85,7 @@
     </table>
     <div class="col-sm-4 offset-sm-8">
         <button type="submit" name="submit" class="btn btn-primary btn-sm" value="Submit">
-            <i class="fa fa-save"></i> Update 
+            <i class="fa fa-save"></i> Update
         </button>
         <button type="button" onclick="window.history.back()" class="btn btn-light btn-sm">
             Kembali

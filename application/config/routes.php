@@ -1,4 +1,5 @@
 <?php
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
@@ -127,4 +128,4 @@ $route['penjualan_bulanan'] = 'laporan/data_penjualan_bulanan';
 $route['penjualan_bulanan/(:any)'] = 'laporan/cetak_penjualan_bulanan/$1';
 
 $route['404_override'] = '';
-$route['translate_uri_dashes'] = FALSE;
+$route['translate_uri_dashes'] = false;

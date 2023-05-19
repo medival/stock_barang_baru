@@ -1,9 +1,10 @@
 <?php
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Home extends CI_Controller
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         //load library
@@ -26,7 +27,7 @@ class Home extends CI_Controller
         }
 
         //ketika button di klik, jalankan proses login
-        if ($this->input->post('submit', TRUE) == 'submit') {
+        if ($this->input->post('submit', true) == 'submit') {
             //validasi data
             $this->form_validation->set_rules(
                 'username',
@@ -49,10 +50,10 @@ class Home extends CI_Controller
             );
 
             //jika validasi berhasil maka lanjutkan ke proses pengecekan data
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
 
-                $username = $this->security->xss_clean($this->input->post('username', TRUE));
-                $password = $this->security->xss_clean($this->input->post('password', TRUE));
+                $username = $this->security->xss_clean($this->input->post('username', true));
+                $password = $this->security->xss_clean($this->input->post('password', true));
 
                 //ambil data user sesuai username
                 $get = $this->app->getData('tbl_user', ['username' => $username]);
@@ -112,11 +113,11 @@ class Home extends CI_Controller
         }
 
         //ketika button di klik
-        if ($this->input->post('submit', TRUE) == 'submit') {
+        if ($this->input->post('submit', true) == 'submit') {
 
             $f = $getData->row();
 
-            if ($this->security->xss_clean($this->input->post('username', TRUE)) == $f->username) {
+            if ($this->security->xss_clean($this->input->post('username', true)) == $f->username) {
 
                 $rules_username = 'required|min_length[5]|max_length[20]|regex_match[/^[A-Za-z0-9]+$/]';
             } else {
@@ -160,9 +161,9 @@ class Home extends CI_Controller
             );
 
             //jika proses validasi berhasil, maka lanjutkan ke proses update data
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
                 //validasi password apakah benar atau salah
-                if (!password_verify($this->input->post('password', TRUE), $f->password)) {
+                if (!password_verify($this->input->post('password', true), $f->password)) {
                     $this->session->set_flashdata('error', 'Password yang anda masukkan salah..');
                     redirect('admin');
                 }
@@ -187,8 +188,8 @@ class Home extends CI_Controller
                     $config2['image_library']   = 'gd2';
                     $config2['source_image']    = './assets/foto/' . $foto;
                     $config2['new_image']       = './assets/foto/thumb/' . $foto;
-                    $config2['maintain_ratio']  = FALSE;
-                    $imgSize2 = $this->image_lib->get_image_properties($config2['source_image'], TRUE);
+                    $config2['maintain_ratio']  = false;
+                    $imgSize2 = $this->image_lib->get_image_properties($config2['source_image'], true);
 
                     if ($imgSize2['width'] > $imgSize2['height']) {
                         $config2['width']   = $imgSize2['height'];
@@ -218,8 +219,8 @@ class Home extends CI_Controller
 
                 //masukkan data ke variable array
                 $update = [
-                    'username' => $this->security->xss_clean($this->input->post('username', TRUE)),
-                    'fullname' => $this->security->xss_clean($this->input->post('fullname', TRUE)),
+                    'username' => $this->security->xss_clean($this->input->post('username', true)),
+                    'fullname' => $this->security->xss_clean($this->input->post('fullname', true)),
                     'foto' => $foto
                 ];
 
@@ -234,7 +235,7 @@ class Home extends CI_Controller
                     //update session profil
                     $this->session->set_userdata(
                         array(
-                            'User' => $this->security->xss_clean($this->input->post('fullname', TRUE)),
+                            'User' => $this->security->xss_clean($this->input->post('fullname', true)),
                             'foto' => $foto
                         )
                     );
@@ -266,11 +267,11 @@ class Home extends CI_Controller
         }
 
         //ketika button di klik
-        if ($this->security->xss_clean($this->input->post('submit', TRUE)) == 'submit') {
+        if ($this->security->xss_clean($this->input->post('submit', true)) == 'submit') {
             //fetch data lama pegawai
             $p = $getData->row();
             //cek apakah admin merubah username nya atau tidak
-            if ($this->security->xss_clean($this->input->post('username', TRUE)) == $p->username) {
+            if ($this->security->xss_clean($this->input->post('username', true)) == $p->username) {
                 $rules_username = 'required|min_length[5]|max_length[20]|regex_match[/^[A-Za-z0-9]+$/]';
             } else {
                 $rules_username = 'required|min_length[5]|max_length[20]|is_unique[tbl_user.username]|regex_match[/^[A-Za-z0-9]+$/]';
@@ -302,7 +303,7 @@ class Home extends CI_Controller
             );
 
             //cek apakah form nomor hp diisi atau tidak, jika diisi maka lakukan validasi
-            if ($this->input->post('hp', TRUE) != '') {
+            if ($this->input->post('hp', true) != '') {
                 $this->form_validation->set_rules(
                     'hp',
                     'Nomor HP',
@@ -339,9 +340,9 @@ class Home extends CI_Controller
             );
 
             //jika proses validasi berhasil, maka lanjutkan ke proses update data
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
                 //validasi password apakah benar atau salah
-                if (!password_verify($this->input->post('password', TRUE), $p->password)) {
+                if (!password_verify($this->input->post('password', true), $p->password)) {
                     $this->session->set_flashdata('error', 'Password yang anda masukkan salah..');
                     redirect('profil');
                 }
@@ -366,8 +367,8 @@ class Home extends CI_Controller
                     $config2['image_library']   = 'gd2';
                     $config2['source_image']    = './assets/foto/' . $foto;
                     $config2['new_image']       = './assets/foto/thumb/' . $foto;
-                    $config2['maintain_ratio']  = FALSE;
-                    $imgSize2 = $this->image_lib->get_image_properties($config2['source_image'], TRUE);
+                    $config2['maintain_ratio']  = false;
+                    $imgSize2 = $this->image_lib->get_image_properties($config2['source_image'], true);
 
                     if ($imgSize2['width'] > $imgSize2['height']) {
                         $config2['width']   = $imgSize2['height'];
@@ -397,10 +398,10 @@ class Home extends CI_Controller
 
                 //masukkan data ke variable array
                 $update = [
-                    'username' => $this->security->xss_clean($this->input->post('username', TRUE)),
-                    'fullname' => $this->security->xss_clean($this->input->post('fullname', TRUE)),
-                    'hp' => $this->security->xss_clean($this->input->post('hp', TRUE)),
-                    'alamat' => $this->security->xss_clean($this->input->post('alamat', TRUE)),
+                    'username' => $this->security->xss_clean($this->input->post('username', true)),
+                    'fullname' => $this->security->xss_clean($this->input->post('fullname', true)),
+                    'hp' => $this->security->xss_clean($this->input->post('hp', true)),
+                    'alamat' => $this->security->xss_clean($this->input->post('alamat', true)),
                     'foto' => $foto
                 ];
 
@@ -415,7 +416,7 @@ class Home extends CI_Controller
                     //update session profil
                     $this->session->set_userdata(
                         array(
-                            'User' => $this->security->xss_clean($this->input->post('fullname', TRUE)),
+                            'User' => $this->security->xss_clean($this->input->post('fullname', true)),
                             'foto' => $foto
                         )
                     );
@@ -438,7 +439,7 @@ class Home extends CI_Controller
         $this->is_login();
 
         //ketika user mengklik tombol ubah password
-        if ($this->input->post('submit', TRUE) == 'submit') {
+        if ($this->input->post('submit', true) == 'submit') {
             //lakukan validasi
             $this->form_validation->set_rules(
                 'pwBaru',
@@ -460,14 +461,14 @@ class Home extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
                 //ambil data user
                 $getData = $this->app->getData('tbl_user', ['id_user' => $this->session->userdata('UserID')]);
                 //fetch data
                 $f = $getData->row();
                 //tampung data dari form
-                $pwBaru = $this->security->xss_clean($this->input->post('pwBaru', TRUE));
-                $pwLama = $this->security->xss_clean($this->input->post('pwLama', TRUE));
+                $pwBaru = $this->security->xss_clean($this->input->post('pwBaru', true));
+                $pwLama = $this->security->xss_clean($this->input->post('pwLama', true));
                 //validasi password lama dengan password yang ada didalam database
                 if (!password_verify($pwLama, $f->password)) {
                     $this->session->set_flashdata('error', 'Password Lama yang anda masukkan salah..');
