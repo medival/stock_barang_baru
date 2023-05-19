@@ -90,7 +90,7 @@ class M_pembelian extends CI_Model
 
         foreach ($this->column_search as $item) { // loop column
             if ($_POST['search']['value']) { // Jika datatable mengirim POST untuk search
-                
+
                 if ($i === 0) { // first loop
                     $this->db->group_start(); // open bracket.
 
@@ -107,7 +107,7 @@ class M_pembelian extends CI_Model
         }
 
         if (isset($_POST['order'])) { // Proses order
-            
+
             $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
         } elseif (isset($this->order)) {
 

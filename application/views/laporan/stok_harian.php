@@ -39,7 +39,7 @@ if ($this->session->flashdata('alert')) {
             <th scope="col">Nama Barang</th>
             <th scope="col">Brand</th>
             <th scope="col" class="text-center">Stok Barang</th>
-           
+
         </tr>
     </thead>
     <tbody>
