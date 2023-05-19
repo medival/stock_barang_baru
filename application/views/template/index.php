@@ -159,27 +159,27 @@
     <?php
     $arr_uri = array('stok_barang', 'barang', 'pegawai', 'supplier', 'data_pembelian', 'data_penjualan');
 
-    if (in_array(strtolower($this->uri->segment(1)), $arr_uri) && !$this->uri->segment(2)) :
-        switch ($this->uri->segment(1)) {
-            case 'stok_barang':
-                $file = 'ajax_stok_barang';
-                break;
-            case 'barang':
-                $file = 'ajax_barang';
-                break;
-            case 'pegawai':
-                $file = 'ajax_pegawai';
-                break;
-            case 'supplier':
-                $file = 'ajax_supplier';
-                break;
-            case 'data_pembelian':
-                $file = 'ajax_pembelian';
-                break;
-            case 'data_penjualan':
-                $file = 'ajax_penjualan';
-                break;
-        }
+if (in_array(strtolower($this->uri->segment(1)), $arr_uri) && !$this->uri->segment(2)) :
+    switch ($this->uri->segment(1)) {
+        case 'stok_barang':
+            $file = 'ajax_stok_barang';
+            break;
+        case 'barang':
+            $file = 'ajax_barang';
+            break;
+        case 'pegawai':
+            $file = 'ajax_pegawai';
+            break;
+        case 'supplier':
+            $file = 'ajax_supplier';
+            break;
+        case 'data_pembelian':
+            $file = 'ajax_pembelian';
+            break;
+        case 'data_penjualan':
+            $file = 'ajax_penjualan';
+            break;
+    }
     ?>
         <script>
             $(document).ready(function() {

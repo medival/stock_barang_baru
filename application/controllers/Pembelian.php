@@ -1,9 +1,10 @@
 <?php
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Pembelian extends CI_Controller
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         //load library
@@ -36,7 +37,7 @@ class Pembelian extends CI_Controller
         $this->is_login();
 
         //ketika button simpan di klik maka lakukan proses validasi dan penyimpanan data
-        if ($this->input->post('submit', TRUE) == 'Submit') {
+        if ($this->input->post('submit', true) == 'Submit') {
             //cek apakah user sudah memilih barang atau belum, jika belum maka munculkan pesan kesalahan
             if (!$this->cart->contents()) {
                 $this->session->set_flashdata('alert', 'Anda belum memilih barang...');
@@ -64,11 +65,11 @@ class Pembelian extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
 
                 $id = 'ID' . time();
-                $tgl = date('Y-m-d', strtotime(str_replace('/', '-', $this->security->xss_clean($this->input->post('tanggal', TRUE)))));
-                $sup = $this->security->xss_clean($this->input->post('supplier', TRUE));
+                $tgl = date('Y-m-d', strtotime(str_replace('/', '-', $this->security->xss_clean($this->input->post('tanggal', true)))));
+                $sup = $this->security->xss_clean($this->input->post('supplier', true));
                 $user = $this->session->userdata('UserID');
 
                 $data_pembelian = [
@@ -134,9 +135,9 @@ class Pembelian extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
                 //tangkap rowid
-                $id = $this->security->xss_clean($this->input->post('id', TRUE));
+                $id = $this->security->xss_clean($this->input->post('id', true));
 
                 $hapus = $this->m_pembelian->delete(['tbl_pembelian', 'tbl_detail_pembelian'], ['id_pembelian' => $id]);
 
@@ -188,7 +189,7 @@ class Pembelian extends CI_Controller
             redirect('data_pembelian');
         }
         //ketika button diklik
-        if ($this->input->post('submit', TRUE) == 'Update') {
+        if ($this->input->post('submit', true) == 'Update') {
             //cek apakah user sudah memilih barang atau belum, jika belum maka munculkan pesan kesalahan
             if (!$this->cart->contents()) {
                 $this->session->set_flashdata('alert', 'Anda belum memilih barang...');
@@ -226,11 +227,11 @@ class Pembelian extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
 
-                $idP = $this->security->xss_clean($this->input->post('idP', TRUE));
-                $tgl = date('Y-m-d', strtotime(str_replace('/', '-', $this->security->xss_clean($this->input->post('tanggal', TRUE)))));
-                $sup = $this->security->xss_clean($this->input->post('supplier', TRUE));
+                $idP = $this->security->xss_clean($this->input->post('idP', true));
+                $tgl = date('Y-m-d', strtotime(str_replace('/', '-', $this->security->xss_clean($this->input->post('tanggal', true)))));
+                $sup = $this->security->xss_clean($this->input->post('supplier', true));
 
                 $data_pembelian = [
                     'tgl_pembelian' => $tgl,
@@ -343,9 +344,9 @@ class Pembelian extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
                 //ambil barang sesuai kode
-                $get_barang = $this->m_pembelian->getData('tbl_barang', ['kode_barang' => $this->security->xss_clean($this->input->post('barangx', TRUE)), 'active' => 'Y']);
+                $get_barang = $this->m_pembelian->getData('tbl_barang', ['kode_barang' => $this->security->xss_clean($this->input->post('barangx', true)), 'active' => 'Y']);
 
                 if ($get_barang->num_rows() == 1) {
                     //fetch data barang dan masukkan kedalam cart
@@ -353,8 +354,8 @@ class Pembelian extends CI_Controller
 
                     $keranjang = array(
                         'id'      => $b->kode_barang,
-                        'qty'     => $this->security->xss_clean($this->input->post('jumlah', TRUE)),
-                        'price'   => $this->security->xss_clean(str_replace('.', '', $this->input->post('harga', TRUE))),
+                        'qty'     => $this->security->xss_clean($this->input->post('jumlah', true)),
+                        'price'   => $this->security->xss_clean(str_replace('.', '', $this->input->post('harga', true))),
                         'name'    => $b->nama_barang
                     );
 
@@ -397,7 +398,7 @@ class Pembelian extends CI_Controller
         //validasi request ajax
         if ($this->input->is_ajax_request()) {
             //tangkap rowid
-            $rowid = $this->security->xss_clean($this->input->post('rowid', TRUE));
+            $rowid = $this->security->xss_clean($this->input->post('rowid', true));
 
             $get_item = $this->cart->get_item($rowid);
 
@@ -468,12 +469,12 @@ class Pembelian extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
 
                 $keranjang = array(
-                    'rowid' => $this->security->xss_clean($this->input->post('rowid', TRUE)),
-                    'qty' => $this->security->xss_clean($this->input->post('jumlah', TRUE)),
-                    'price' => $this->security->xss_clean(str_replace('.', '', $this->input->post('harga', TRUE)))
+                    'rowid' => $this->security->xss_clean($this->input->post('rowid', true)),
+                    'qty' => $this->security->xss_clean($this->input->post('jumlah', true)),
+                    'price' => $this->security->xss_clean(str_replace('.', '', $this->input->post('harga', true)))
                 );
 
                 $this->cart->update($keranjang);
@@ -516,9 +517,9 @@ class Pembelian extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
                 //tangkap rowid
-                $rowid = $this->security->xss_clean($this->input->post('rowid', TRUE));
+                $rowid = $this->security->xss_clean($this->input->post('rowid', true));
 
                 $this->cart->remove($rowid);
 
@@ -541,7 +542,7 @@ class Pembelian extends CI_Controller
         }
     }
 
-    function checkDateFormat($date)
+    public function checkDateFormat($date)
     {
         if (preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4}$/", $date)) {
             if (checkdate(substr($date, 3, 2), substr($date, 0, 2), substr($date, 6, 4))) {
@@ -563,11 +564,11 @@ class Pembelian extends CI_Controller
             $list = $this->m_pembelian->get_datatables();
             //siapkan variabel array
             $data = array();
-            
+
             $no = $_POST['start'];
 
             foreach ($list as $i) {
-                
+
                 $button = '';
                 if ($this->session->userdata('level') == 'admin' || $this->session->userdata('UserID') == $i->id_user) :
 

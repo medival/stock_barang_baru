@@ -1,9 +1,10 @@
 <?php
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Laporan extends CI_Controller
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         //load library
@@ -27,7 +28,7 @@ class Laporan extends CI_Controller
         //cek login
         $this->is_login();
 
-        if ($this->input->post('cari', TRUE) == 'Search') {
+        if ($this->input->post('cari', true) == 'Search') {
             //validasi input data tanggal
             $this->form_validation->set_rules(
                 'tanggal',
@@ -39,8 +40,8 @@ class Laporan extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
-                $tanggal = $this->security->xss_clean($this->input->post('tanggal', TRUE));
+            if ($this->form_validation->run() == true) {
+                $tanggal = $this->security->xss_clean($this->input->post('tanggal', true));
             } else {
                 $this->session->set_flashdata('alert', validation_errors('<p class="my-0">', '</p>'));
 
@@ -85,7 +86,7 @@ class Laporan extends CI_Controller
         //cek login
         $this->is_login();
 
-        if ($this->input->post('cari', TRUE) == 'Search') {
+        if ($this->input->post('cari', true) == 'Search') {
             //validasi input data tanggal
             $this->form_validation->set_rules(
                 'bulan',
@@ -110,9 +111,9 @@ class Laporan extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
-                $bulan = $this->security->xss_clean($this->input->post('bulan', TRUE));
-                $tahun = $this->security->xss_clean($this->input->post('tahun', TRUE));
+            if ($this->form_validation->run() == true) {
+                $bulan = $this->security->xss_clean($this->input->post('bulan', true));
+                $tahun = $this->security->xss_clean($this->input->post('tahun', true));
             } else {
                 $this->session->set_flashdata('alert', validation_errors('<p class="my-0">', '</p>'));
 
@@ -166,7 +167,7 @@ class Laporan extends CI_Controller
         //cek login
         $this->is_login();
 
-        if ($this->input->post('cari', TRUE) == 'Search') {
+        if ($this->input->post('cari', true) == 'Search') {
 
             $this->form_validation->set_rules(
                 'tahun',
@@ -181,8 +182,8 @@ class Laporan extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
-                $tahun = $this->security->xss_clean($this->input->post('tahun', TRUE));
+            if ($this->form_validation->run() == true) {
+                $tahun = $this->security->xss_clean($this->input->post('tahun', true));
             } else {
                 $this->session->set_flashdata('alert', validation_errors('<p class="my-0">', '</p>'));
 
@@ -227,7 +228,7 @@ class Laporan extends CI_Controller
         //cek login
         $this->is_login();
 
-        if ($this->input->post('cari', TRUE) == 'Search') {
+        if ($this->input->post('cari', true) == 'Search') {
             //validasi input data tanggal
             $this->form_validation->set_rules(
                 'tanggal',
@@ -239,8 +240,8 @@ class Laporan extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
-                $tanggal = $this->security->xss_clean($this->input->post('tanggal', TRUE));
+            if ($this->form_validation->run() == true) {
+                $tanggal = $this->security->xss_clean($this->input->post('tanggal', true));
             } else {
                 $this->session->set_flashdata('alert', validation_errors('<p class="my-0">', '</p>'));
 
@@ -285,7 +286,7 @@ class Laporan extends CI_Controller
         //cek login
         $this->is_login();
 
-        if ($this->input->post('cari', TRUE) == 'Search') {
+        if ($this->input->post('cari', true) == 'Search') {
             //validasi input data tanggal
             $this->form_validation->set_rules(
                 'bulan',
@@ -310,9 +311,9 @@ class Laporan extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
-                $bulan = $this->security->xss_clean($this->input->post('bulan', TRUE));
-                $tahun = $this->security->xss_clean($this->input->post('tahun', TRUE));
+            if ($this->form_validation->run() == true) {
+                $bulan = $this->security->xss_clean($this->input->post('bulan', true));
+                $tahun = $this->security->xss_clean($this->input->post('tahun', true));
             } else {
                 $this->session->set_flashdata('alert', validation_errors('<p class="my-0">', '</p>'));
 
@@ -366,7 +367,7 @@ class Laporan extends CI_Controller
         //cek login
         $this->is_login();
 
-        if ($this->input->post('cari', TRUE) == 'Search') {
+        if ($this->input->post('cari', true) == 'Search') {
             //validasi input data tanggal
             $this->form_validation->set_rules(
                 'tanggal',
@@ -378,8 +379,8 @@ class Laporan extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
-                $tanggal = $this->security->xss_clean($this->input->post('tanggal', TRUE));
+            if ($this->form_validation->run() == true) {
+                $tanggal = $this->security->xss_clean($this->input->post('tanggal', true));
             } else {
                 $this->session->set_flashdata('alert', validation_errors('<p class="my-0">', '</p>'));
 
@@ -424,7 +425,7 @@ class Laporan extends CI_Controller
         //cek login
         $this->is_login();
 
-        if ($this->input->post('cari', TRUE) == 'Search') {
+        if ($this->input->post('cari', true) == 'Search') {
             //validasi input data tanggal
             $this->form_validation->set_rules(
                 'bulan',
@@ -449,9 +450,9 @@ class Laporan extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
-                $bulan = $this->security->xss_clean($this->input->post('bulan', TRUE));
-                $tahun = $this->security->xss_clean($this->input->post('tahun', TRUE));
+            if ($this->form_validation->run() == true) {
+                $bulan = $this->security->xss_clean($this->input->post('bulan', true));
+                $tahun = $this->security->xss_clean($this->input->post('tahun', true));
             } else {
                 $this->session->set_flashdata('alert', validation_errors('<p class="my-0">', '</p>'));
 
@@ -500,7 +501,7 @@ class Laporan extends CI_Controller
         $this->template->cetak('cetak/penjualan_bulanan', $data);
     }
 
-    function checkDateFormat($date)
+    public function checkDateFormat($date)
     {
         if (preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4}$/", $date)) {
             if (checkdate(substr($date, 3, 2), substr($date, 0, 2), substr($date, 6, 4))) {
@@ -513,7 +514,7 @@ class Laporan extends CI_Controller
         }
     }
 
-    function checkBulan($bulan)
+    public function checkBulan($bulan)
     {
         $array_bulan = array('januari', 'februari', 'maret', 'april', 'mei', 'juni', 'juli', 'agustus', 'september', 'oktober', 'november', 'desember');
 
@@ -576,7 +577,7 @@ class Laporan extends CI_Controller
         //cek login
         $this->is_login();
 
-        if ($this->input->post('cari', TRUE) == 'Search') {
+        if ($this->input->post('cari', true) == 'Search') {
             //validasi input data tanggal
             $this->form_validation->set_rules(
                 'tanggal',
@@ -588,8 +589,8 @@ class Laporan extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
-                $tanggal = $this->security->xss_clean($this->input->post('tanggal', TRUE));
+            if ($this->form_validation->run() == true) {
+                $tanggal = $this->security->xss_clean($this->input->post('tanggal', true));
             } else {
                 $this->session->set_flashdata('alert', validation_errors('<p class="my-0">', '</p>'));
 
@@ -630,7 +631,7 @@ class Laporan extends CI_Controller
         //cek login
         $this->is_login();
 
-        if ($this->input->post('cari', TRUE) == 'Search') {
+        if ($this->input->post('cari', true) == 'Search') {
             //validasi input data tanggal
             $this->form_validation->set_rules(
                 'bulan',
@@ -655,9 +656,9 @@ class Laporan extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
-                $bulan = $this->security->xss_clean($this->input->post('bulan', TRUE));
-                $tahun = $this->security->xss_clean($this->input->post('tahun', TRUE));
+            if ($this->form_validation->run() == true) {
+                $bulan = $this->security->xss_clean($this->input->post('bulan', true));
+                $tahun = $this->security->xss_clean($this->input->post('tahun', true));
             } else {
                 $this->session->set_flashdata('alert', validation_errors('<p class="my-0">', '</p>'));
 

@@ -44,12 +44,12 @@ function tanggal_indo($tgl)
         <?php
 
         $i = 1;
-        $total_pengeluaran = 0;
+$total_pengeluaran = 0;
 
-        foreach ($data->result() as $dd) :
-            $total = $dd->qty * $dd->harga;
-            $total_pengeluaran += $total;
-        ?>
+foreach ($data->result() as $dd) :
+    $total = $dd->qty * $dd->harga;
+    $total_pengeluaran += $total;
+    ?>
             <tr>
                 <td><?= $i++; ?></td>
                 <td><?= $dd->kode_barang; ?></td>

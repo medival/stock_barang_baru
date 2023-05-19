@@ -25,7 +25,7 @@ if ($this->session->flashdata('alert')) {
 
                     echo '<option value="' . $i . '" ' . $selected . '>' . $i . '</option>';
                 }
-                ?>
+?>
             </select>
         </div>
         <button type="submit" class="btn btn-primary mb-2 btn-sm" name="cari" value="Search">
@@ -53,25 +53,25 @@ if ($this->session->flashdata('alert')) {
     <tbody>
         <?php
         $i = 1;
-        if ($data->num_rows() > 0) {
-            foreach ($data->result() as $dt) {
-                $penjualan = ($dt->qty_penjualan_new != '') ? $dt->qty_penjualan_new : 0;
-                $pembelian = ($dt->qty_pembelian_new != '') ? $dt->qty_pembelian_new : 0;
+if ($data->num_rows() > 0) {
+    foreach ($data->result() as $dt) {
+        $penjualan = ($dt->qty_penjualan_new != '') ? $dt->qty_penjualan_new : 0;
+        $pembelian = ($dt->qty_pembelian_new != '') ? $dt->qty_pembelian_new : 0;
 
-                echo '<tr>';
-                echo '<td>' . $i++ . '</td>';
-                echo '<td>' . $dt->kode_barang . '</td>';
-                echo '<td>' . $dt->nama_barang . '</td>';
-                echo '<td>' . $dt->brand . '</td>';
-                echo '<td class="text-center">' . (($dt->stok + $penjualan) - $pembelian) . '</td>';
-               
-                echo '</tr>';
-            }
-        } else {
-            echo '<tr>';
-            echo '<td colspan="7" class="text-center">Data tidak ditemukan</td>';
-            echo '</tr>';
-        }
-        ?>
+        echo '<tr>';
+        echo '<td>' . $i++ . '</td>';
+        echo '<td>' . $dt->kode_barang . '</td>';
+        echo '<td>' . $dt->nama_barang . '</td>';
+        echo '<td>' . $dt->brand . '</td>';
+        echo '<td class="text-center">' . (($dt->stok + $penjualan) - $pembelian) . '</td>';
+
+        echo '</tr>';
+    }
+} else {
+    echo '<tr>';
+    echo '<td colspan="7" class="text-center">Data tidak ditemukan</td>';
+    echo '</tr>';
+}
+?>
     </tbody>
 </table>

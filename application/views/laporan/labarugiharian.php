@@ -43,29 +43,29 @@ if ($this->session->flashdata('alert')) {
     <tbody>
         <?php
         $i = 1;
-        $row = 1;
-        $total = 0;
-        $totalpembelian = 0;
-        $totalbarangdibeli = 0;
-        $datapembelian = $this->db->join('tbl_pembelian', 'tbl_detail_pembelian.id_pembelian = tbl_pembelian.id_pembelian')->where('tgl_pembelian', $date)->get('tbl_detail_pembelian')->result();
-        foreach ($datapembelian as $pembelian) {
-            $totalpembelian += $pembelian->qty * $pembelian->harga;
-            $totalbarangdibeli += $pembelian->qty;
-        }
-        $totalpenjualan = 0;
-        $totalbarangdijual = 0;
-        $datapenjualan = $this->db->join('tbl_penjualan', 'tbl_detail_penjualan.id_penjualan = tbl_penjualan.id_penjualan')->where('tgl_penjualan', $date)->get('tbl_detail_penjualan')->result();
-        foreach ($datapenjualan as $penjualan) {
-            $totalpenjualan += $penjualan->qty * $penjualan->harga;
-            $totalbarangdijual += $penjualan->qty;
-        }
-        $rugi = 0;
-        $laba = $totalpenjualan - $totalpembelian;
-        if ($laba < 0) {
-            $rugi = abs($laba);
-            $laba = 0;
-        }
-        ?>
+$row = 1;
+$total = 0;
+$totalpembelian = 0;
+$totalbarangdibeli = 0;
+$datapembelian = $this->db->join('tbl_pembelian', 'tbl_detail_pembelian.id_pembelian = tbl_pembelian.id_pembelian')->where('tgl_pembelian', $date)->get('tbl_detail_pembelian')->result();
+foreach ($datapembelian as $pembelian) {
+    $totalpembelian += $pembelian->qty * $pembelian->harga;
+    $totalbarangdibeli += $pembelian->qty;
+}
+$totalpenjualan = 0;
+$totalbarangdijual = 0;
+$datapenjualan = $this->db->join('tbl_penjualan', 'tbl_detail_penjualan.id_penjualan = tbl_penjualan.id_penjualan')->where('tgl_penjualan', $date)->get('tbl_detail_penjualan')->result();
+foreach ($datapenjualan as $penjualan) {
+    $totalpenjualan += $penjualan->qty * $penjualan->harga;
+    $totalbarangdijual += $penjualan->qty;
+}
+$rugi = 0;
+$laba = $totalpenjualan - $totalpembelian;
+if ($laba < 0) {
+    $rugi = abs($laba);
+    $laba = 0;
+}
+?>
         <tr>
             <td><span class="float-left"><?= $totalbarangdibeli ?></span></td>
             <td><span class="float-left"><?= $totalbarangdijual ?></span></td>
@@ -80,14 +80,14 @@ if ($this->session->flashdata('alert')) {
             <td colspan="8">
         </tr>
         <?php
-        echo '<tr>';
-        echo '<td colspan="3" class="text-center text-success"><b>Total Laba</b></td>';
-        echo '<td><b><span class="float-left">Rp.</span><span class="float-right">' . number_format($laba, 0, ',', '.') . '</span></b></td>';
-        echo '</tr>';
-        echo '<tr>';
-        echo '<td colspan="3" class="text-center text-danger"><b>Total Rugi</b></td>';
-        echo '<td><b><span class="float-left">Rp.</span><span class="float-right">' . number_format($rugi, 0, ',', '.') . '</span></b></td>';
-        echo '</tr>';
-        ?>
+echo '<tr>';
+echo '<td colspan="3" class="text-center text-success"><b>Total Laba</b></td>';
+echo '<td><b><span class="float-left">Rp.</span><span class="float-right">' . number_format($laba, 0, ',', '.') . '</span></b></td>';
+echo '</tr>';
+echo '<tr>';
+echo '<td colspan="3" class="text-center text-danger"><b>Total Rugi</b></td>';
+echo '<td><b><span class="float-left">Rp.</span><span class="float-right">' . number_format($rugi, 0, ',', '.') . '</span></b></td>';
+echo '</tr>';
+?>
     </tbody>
 </table>

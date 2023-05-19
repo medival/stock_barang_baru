@@ -61,7 +61,7 @@
                     ' . $this->session->flashdata('alert') . '
                   </div></div>';
                 }
-                ?>
+    ?>
 
             </div>
             <div class="col-md-4 col-sm-12 offset-md-4">
