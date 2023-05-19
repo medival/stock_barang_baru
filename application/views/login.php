@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Aplikasi Persedian Barang</title>
-    <link rel="shortcut icon" href="<?= base_url('assets/img/logo.png'); ?>">
+    <link rel="shortcut icon" href="<?= base_url('assets/img/logoapk.jpeg'); ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/bootstrap.min.css'); ?>">
     <!-- Font-awesome CSS -->
     <link rel="stylesheet" href="<?= base_url('assets/font-awesome/css/font-awesome.min.css'); ?>">

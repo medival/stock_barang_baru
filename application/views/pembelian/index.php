@@ -31,7 +31,7 @@ if ($this->session->flashdata('error')) {
     <table class="table table-sm table-hover table-striped" id="tables">
         <thead class="thead-dark">
             <tr>
-                <th scope="col">#</th>
+                <th scope="col">No</th>
                 <th scope="col">ID Pembelian</th>
                 <th scope="col">Tanggal</th>
                 <th scope="col">Distributor</th>

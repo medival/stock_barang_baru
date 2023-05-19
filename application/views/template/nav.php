@@ -2,7 +2,7 @@
 
 <nav id="sidebar">
     <div class="p-4 pt-5 bg-info">
-        <a href="<?= site_url(); ?>" class="img logo rounded-circle mb-3" style="background-image: url(<?= base_url('assets/img/logo.png'); ?>);"></a>
+        <a href="<?= site_url(); ?>" class="img logo rounded-circle mb-3" style="background-image: url(<?= base_url('assets/img/logoapk.jpeg'); ?>);"></a>
         <ul class="list-unstyled components mb-5">
 
             <li <?= (strtolower($this->uri->segment(1)) == 'dashboard') ? 'class="active"' : ''; ?>>
