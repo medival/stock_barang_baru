@@ -128,7 +128,7 @@
             <p>
                 Copyright &copy;<script>
                     document.write(new Date().getFullYear());
-                </script>
+                </script> Linda Saputri
             </p>
         </div>
 
