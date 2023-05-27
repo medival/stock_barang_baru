@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-10">
-        <h4 class="mb-0"><i class="fa fa-truck"></i> Edit Data Distributor</h4>
+        <h4 class="mb-0"><i class="fa fa-truck"></i> Edit Data Supplier</h4>
     </div>
 </div>
 <hr class="mt-0" />
@@ -10,9 +10,9 @@
 <input type="hidden" name="idSupplier" value="<?= $data->id_supplier; ?>" />
 <div class="col-md-8">
     <div class="form-group row">
-        <label for="nama_supplier" class="col-sm-3 col-form-label">Nama Distributor</label>
+        <label for="nama_supplier" class="col-sm-3 col-form-label">Nama Supplier</label>
         <div class="col-sm-9">
-            <input type="text" class="form-control form-control-sm <?= (form_error('nama_supplier')) ? 'is-invalid' : ''; ?>" id="nama_supplier" required autofocus name="nama_supplier" placeholder="Nama distributor" value="<?= (set_value('nama_supplier')) ? set_value('nama_supplier') : $data->nama_supplier; ?>">
+            <input type="text" class="form-control form-control-sm <?= (form_error('nama_supplier')) ? 'is-invalid' : ''; ?>" id="nama_supplier" required autofocus name="nama_supplier" placeholder="Nama Supplier" value="<?= (set_value('nama_supplier')) ? set_value('nama_supplier') : $data->nama_supplier; ?>">
             <div class="invalid-feedback">
                 <?= form_error('nama_supplier', '<p class="error-message">', '</p>'); ?>
             </div>
@@ -22,7 +22,7 @@
     <div class="form-group row">
         <label for="alamat" class="col-sm-3 col-form-label">Alamat</label>
         <div class="col-sm-9">
-            <textarea class="form-control form-control-sm <?= (form_error('alamat')) ? 'is-invalid' : ''; ?>" id="alamat" rows="2" name="alamat" placeholder="Alamat distributor"><?= (set_value('alamat')) ? set_value('alamat') : $data->alamat; ?></textarea>
+            <textarea class="form-control form-control-sm <?= (form_error('alamat')) ? 'is-invalid' : ''; ?>" id="alamat" rows="2" name="alamat" placeholder="Alamat Supplier"><?= (set_value('alamat')) ? set_value('alamat') : $data->alamat; ?></textarea>
             <div class="invalid-feedback">
                 <?= form_error('alamat', '<p class="error-message">', '</p>'); ?>
             </div>
