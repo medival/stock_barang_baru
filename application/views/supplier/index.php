@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-10">
-        <h4 class="mb-0"><i class="fa fa-truck"></i> Data Distributor</h4>
+        <h4 class="mb-0"><i class="fa fa-truck"></i> Data Supplier</h4>
     </div>
     <div class="col-sm-12 col-md-2">
         <a href="<?= site_url('tambah_supplier'); ?>" class="btn btn-success btn-sm btn-block">Tambah Data</a>
@@ -29,8 +29,8 @@ if ($this->session->flashdata('error')) {
         <thead class="thead-dark">
             <tr>
                 <th scope="col">No</th>
-                <th scope="col">ID Distributor</th>
-                <th scope="col">Nama Distributor</th>
+                <th scope="col">ID Supplier</th>
+                <th scope="col">Nama Supplier</th>
                 <th scope="col">Alamat</th>
                 <th scope="col">Telp</th>
                 <th scope="col">Opsi</th>
