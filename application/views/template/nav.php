@@ -194,7 +194,7 @@ if ($this->session->userdata('level') == 'pegawai') :
 endif;
 ?>
 
-            
+
         </ul>
 
         <div class="footer">

@@ -131,7 +131,7 @@
                                     <a class="dropdown-item" href="<?= site_url('password'); ?>">
                                         Ganti Password
                                     </a>
-                                    <a class="dropdown-item" href="javascript:void(0);" onclick="return swal({ 
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="return swal({
  title: 'Apakah anda yakin akan keluar ?', type: 'warning' , showCancelButton: true, confirmButtonColor: '#DD6B55' , confirmButtonText: 'Ya, Sign Out!', closeOnConfirm: false }, function(){ window.location.href = '<?= site_url('sign_out'); ?>'; });">Sign Out</a>
                                 </div>
                             </li>
