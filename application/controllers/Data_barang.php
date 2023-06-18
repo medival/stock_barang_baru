@@ -1,9 +1,10 @@
 <?php
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Data_barang extends CI_Controller
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         //load library
@@ -36,7 +37,7 @@ class Data_barang extends CI_Controller
         //jika bukan maka alihkan ke dashboard
         $this->is_admin();
 
-        if ($this->input->post('submit', TRUE) == 'submit') {
+        if ($this->input->post('submit', true) == 'submit') {
             //set rules form validasi
             $this->form_validation->set_rules(
                 'kode',
@@ -82,13 +83,13 @@ class Data_barang extends CI_Controller
             );
 
             //jika data sudah valid maka lakukan proses penyimpanan
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
                 //masukkan data ke variable array
                 $simpan = array(
-                    'kode_barang' => $this->security->xss_clean($this->input->post('kode', TRUE)),
-                    'nama_barang' => $this->security->xss_clean($this->input->post('nama_barang', TRUE)),
-                    'brand' => $this->security->xss_clean($this->input->post('brand', TRUE)),
-                    'harga' => str_replace('.', '', $this->security->xss_clean($this->input->post('harga', TRUE)))
+                    'kode_barang' => $this->security->xss_clean($this->input->post('kode', true)),
+                    'nama_barang' => $this->security->xss_clean($this->input->post('nama_barang', true)),
+                    'brand' => $this->security->xss_clean($this->input->post('brand', true)),
+                    'harga' => str_replace('.', '', $this->security->xss_clean($this->input->post('harga', true)))
                 );
 
                 //simpan ke database
@@ -134,10 +135,10 @@ class Data_barang extends CI_Controller
         }
 
         //ketika button diklik
-        if ($this->input->post('update', TRUE) == 'Update') {
+        if ($this->input->post('update', true) == 'Update') {
             //cek apakah user merubah kode barang atau tidak
             $b = $barang->row();
-            if ($b->kode_barang == $this->security->xss_clean($this->input->post('ID', TRUE))) {
+            if ($b->kode_barang == $this->security->xss_clean($this->input->post('ID', true))) {
                 $rules_kode_barang = 'required|min_length[3]|max_length[6]';
             } else {
                 $rules_kode_barang = 'required|min_length[3]|max_length[6]|is_unique[tbl_barang.kode_barang]';
@@ -199,17 +200,17 @@ class Data_barang extends CI_Controller
             );
 
             //jika validasi berhasil
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
                 //masukkan data ke variable array
                 $update = array(
-                    'nama_barang' => $this->security->xss_clean($this->input->post('nama_barang', TRUE)),
-                    'brand' => $this->security->xss_clean($this->input->post('brand', TRUE)),
-                    'harga' => str_replace('.', '', $this->security->xss_clean($this->input->post('harga', TRUE))),
-                    'active' => $this->security->xss_clean($this->input->post('status', TRUE))
+                    'nama_barang' => $this->security->xss_clean($this->input->post('nama_barang', true)),
+                    'brand' => $this->security->xss_clean($this->input->post('brand', true)),
+                    'harga' => str_replace('.', '', $this->security->xss_clean($this->input->post('harga', true))),
+                    'active' => $this->security->xss_clean($this->input->post('status', true))
                 );
 
                 //simpan ke database
-                $up = $this->m_barang->update('tbl_barang', $update, ['kode_barang' => $this->security->xss_clean($this->input->post('ID', TRUE))]);
+                $up = $this->m_barang->update('tbl_barang', $update, ['kode_barang' => $this->security->xss_clean($this->input->post('ID', true))]);
 
                 if ($up) {
                     $this->session->set_flashdata('success', 'Data Barang berhasil diperbarui...');
