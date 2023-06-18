@@ -7,11 +7,11 @@
 </div>
 <hr class="mt-0" />
 <?php
-if ($this->session->flashdata('alert')) {
-    echo '<div class="alert alert-danger" role="alert">
-    ' . $this->session->flashdata('alert') . '
-  </div>';
-}
+  if ($this->session->flashdata('alert')) {
+      echo '<div class="alert alert-danger" role="alert">
+      ' . $this->session->flashdata('alert') . '
+    </div>';
+  }
 ?>
 <div class="row">
     <div class="col-md-10 col-sm-12">

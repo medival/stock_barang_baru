@@ -2,7 +2,6 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 ?>
 
-
 <div class="row">
     <div class="col-sm-12 col-md-10">
         <h4 class="mb-0"><i class="fa fa-share"></i> Data Barang Masuk</h4>
