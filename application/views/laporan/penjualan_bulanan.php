@@ -70,9 +70,9 @@ if ($this->session->flashdata('alert')) {
 <table class="table table-sm table-bordered mt-3">
     <thead class="thead-dark">
         <tr>
-            <th scope="col">No</th>
+            <th scope="col">#</th>
             <th scope="col">Tanggal</th>
-            <th scope="col">ID Penjualan </th>
+            <th scope="col">ID </th>
             <th scope="col">Nama </th>
             <th scope="col">Nama Barang</th>
             <th scope="col">Brand</th>

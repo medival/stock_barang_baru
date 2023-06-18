@@ -4,14 +4,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class M_penjualan extends CI_Model
 {
 
-    var $select = array('p.id_penjualan AS id_penjualan', 'tgl_penjualan', 'count(id_barang) AS jumlah_jenis_barang', 'SUM(qty * dp.harga) AS total', 'p.id_user AS id_user', 'fullname', 'nama_pembeli',  'GROUP_CONCAT(brg.nama_barang SEPARATOR ", ") AS nama_barang'); //data yang akan diambil
+    var $select = array('p.id_penjualan AS id_penjualan', 'tgl_penjualan', 'count(id_barang) AS jumlah', 'SUM(qty * harga) AS total', 'p.id_user AS id_user', 'fullname', 'nama_pembeli'); //data yang akan diambil
 
     var $table           = 'tbl_penjualan p
                             JOIN tbl_detail_penjualan dp ON(p.id_penjualan = dp.id_penjualan)
-                            JOIN tbl_barang brg ON(dp.id_barang = brg.kode_barang)
                             JOIN tbl_user u ON(p.id_user = u.id_user)';
 
-    var $column_order    =  array(null, 'p.id_penjualan', 'tgl_penjualan', 'nama_pembeli', 'jumlah_jenis_barang', 'nama_barang', 'total', 'fullname', null); //set column field database untuk datatable order
+    var $column_order    =  array(null, 'p.id_penjualan', 'tgl_penjualan', 'nama_pembeli', 'jumlah', 'total', 'fullname', null); //set column field database untuk datatable order
     var $column_search   =  array('p.id_penjualan', 'tgl_penjualan', 'nama_pembeli', 'fullname'); //set column field database untuk datatable search
     var $order = array('p.id_penjualan' => 'asc'); // default order
 
@@ -32,10 +31,29 @@ class M_penjualan extends CI_Model
 
         return $this->db->get();
     }
+
+    // function getDataPenjualan($id)
+    // {
+    //     $select = 'p.id_penjualan AS id_penjualan, tgl_penjualan, dp.qty AS qty, dp.harga AS harga, kode_barang, nama_barang, brand, fullname, u.id_user AS id_user, nama_pembeli, dpm.harga AS harga_beli';
+
+    //     $table = 'tbl_penjualan p
+    //                 LEFT JOIN tbl_detail_penjualan dp ON(p.id_penjualan = dp.id_penjualan)
+    //                 LEFT JOIN tbl_barang b ON(dp.id_barang = b.kode_barang)
+    //                 LEFT JOIN tbl_user u ON(p.id_user = u.id_user)
+    //                 LEFT JOIN tbl_detail_pembelian dpm ON(dpm.id_barang = b.kode_barang)';
+                    
+    //     $where = array('p.id_penjualan' => $id);
+
+    //     $this->db->select($select);
+    //     $this->db->from($table);
+    //     $this->db->where($where);
+
+    //     return $this->db->get();
+    // }
     
     function getDataPenjualan($id)
     {
-        $select = 'p.id_penjualan AS id_penjualan, tgl_penjualan, dp.harga AS harga, dp.qty AS qty, b.kode_barang AS kode_barang, nama_barang, brand, fullname, u.id_user AS id_user, nama_pembeli';
+        $select = 'p.id_penjualan AS id_penjualan, tgl_penjualan, dp.harga AS harga, kode_barang, nama_barang, brand, fullname, u.id_user AS id_user, nama_pembeli';
 
         $table = 'tbl_penjualan p
                     LEFT JOIN tbl_detail_penjualan dp ON(p.id_penjualan = dp.id_penjualan)
@@ -44,12 +62,9 @@ class M_penjualan extends CI_Model
                     
         $where = array('p.id_penjualan' => $id);
 
-        $group = 'p.id_penjualan, tgl_penjualan, dp.harga, b.kode_barang, nama_barang, brand, fullname, u.id_user, nama_pembeli';
-
         $this->db->select($select);
         $this->db->from($table);
         $this->db->where($where);
-        $this->db->group_by($group);
 
         return $this->db->get();
     }

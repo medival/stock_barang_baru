@@ -4,14 +4,15 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class M_pembelian extends CI_Model
 {
 
-    var $select = array('p.id_pembelian AS id_pembelian', 'tgl_pembelian', 'count(id_barang) AS jumlah_jenis_barang', 'SUM(qty * dp.harga) AS total', 'p.id_user AS id_user', 'fullname', 'nama_supplier', 'GROUP_CONCAT(brg.nama_barang SEPARATOR ", ") AS nama_barang'); //data yang akan diambil
+    var $select = array('p.id_pembelian AS id_pembelian', 'tgl_pembelian', 'count(id_barang) AS jumlah', 'SUM(qty * dp.harga) AS total', 'p.id_user AS id_user', 'fullname', 'nama_supplier', 'GROUP_CONCAT(brg.nama_barang SEPARATOR ", ") AS nama_barang'); //data yang akan diambil
 
     var $table           = 'tbl_pembelian p
                             JOIN tbl_detail_pembelian dp ON(p.id_pembelian = dp.id_pembelian)
                             JOIN tbl_user u ON(p.id_user = u.id_user)
                             JOIN tbl_barang brg ON(dp.id_barang = brg.kode_barang)
                             LEFT JOIN tbl_supplier s ON(p.id_supplier = s.id_supplier)';
-    var $column_order    =  array(null, 'p.id_pembelian', 'tgl_pembelian', 'nama_supplier', 'jumlah_jenis_barang', 'nama_barang', 'total', 'fullname', null); //set column field database untuk datatable order
+
+    var $column_order    =  array(null, 'p.id_pembelian', 'tgl_pembelian', 'nama_supplier', 'jumlah', 'total', 'fullname', null); //set column field database untuk datatable order
     var $column_search   =  array('p.id_pembelian', 'tgl_pembelian', 'fullname', 'nama_supplier'); //set column field database untuk datatable search
     var $order = array('p.id_pembelian' => 'asc'); // default order
 

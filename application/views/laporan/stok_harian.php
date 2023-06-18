@@ -34,7 +34,7 @@ if ($this->session->flashdata('alert')) {
 <table class="table table-sm table-bordered table-striped mt-3">
     <thead class="thead-dark">
         <tr>
-            <th scope="col">No</th>
+            <th scope="col">#</th>
             <th scope="col">Kode Barang</th>
             <th scope="col">Nama Barang</th>
             <th scope="col">Brand</th>

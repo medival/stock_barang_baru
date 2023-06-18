@@ -726,8 +726,7 @@ class Penjualan extends CI_Controller
                 $row[] = $i->id_penjualan;
                 $row[] = $this->tanggal_indo($i->tgl_penjualan);
                 $row[] = $i->nama_pembeli;
-                $row[] = $i->jumlah_jenis_barang;
-                $row[] = implode('<br>', explode(',', $i->nama_barang));
+                $row[] = $i->jumlah;
                 $row[] = '<span class="pr-3">' . number_format($i->total, 0, ',', '.') . ',-</span>';
                 $row[] = $i->fullname;
                 $row[] = '<a href="' . site_url('data_penjualan/' . $i->id_penjualan) . '" class="btn btn-sm btn-success">Detail</a>

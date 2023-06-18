@@ -31,11 +31,11 @@ if ($this->session->flashdata('error')) {
     <table class="table table-sm table-hover table-striped" id="tables">
         <thead class="thead-dark">
             <tr>
-                <th scope="col">No</th>
-                <th scope="col">ID Pembelian</th>
+                <th scope="col">#</th>
+                <th scope="col">ID Barang</th>
                 <th scope="col">Tanggal</th>
                 <th scope="col">Distributor</th>
-                <th scope="col">Jumlah Jenis Barang</th>
+                <th scope="col">Jumlah</th>
                 <th scope="col">Nama Barang</th>
                 <th scope="col">Total Harga Beli</th>
                 <th scope="col">Petugas</th>

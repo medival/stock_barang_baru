@@ -582,7 +582,7 @@ class Pembelian extends CI_Controller
                 $row[] = $i->id_pembelian;
                 $row[] = $this->tanggal_indo($i->tgl_pembelian);
                 $row[] = $i->nama_supplier;
-                $row[] = $i->jumlah_jenis_barang;
+                $row[] = $i->jumlah;
                 $row[] = implode('<br>', explode(',', $i->nama_barang));
                 $row[] = '<span class="pr-3">' . number_format($i->total, 0, ',', '.') . ',-</span>';
                 $row[] = $i->fullname;
