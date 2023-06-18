@@ -48,12 +48,11 @@ function tanggal_indo()
 
 <?php
     $level = $this->session->userdata('level');
-    if ( $level == 'pegawai') {
-        $level = 'Owner';
-    } 
-    else {
-        $level = 'Admin';
-    }  
+if ($level == 'pegawai') {
+    $level = 'Owner';
+} else {
+    $level = 'Admin';
+}
 ?>
 <div class="alert alert-info" role="alert">
     <p class="mb-0 text-right"><b><i class="fa fa-calendar"></i> <?= hari_ini(); ?>, <?= tanggal_indo(); ?></b></p>
