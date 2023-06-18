@@ -54,7 +54,7 @@
         <label for="status" class="col-sm-3 col-form-label">Status</label>
         <?php
         $status = (set_value('status')) ? set_value('status') : $barang->active;
-        ?>
+?>
         <div class="col-sm-6">
             <div class="custom-control custom-radio">
                 <input type="radio" class="custom-control-input <?= (form_error('status')) ? 'is-invalid' : ''; ?>" id="Aktif" name="status" value="Y" <?= (ucwords($status) == 'Y') ? 'checked' : ''; ?>>

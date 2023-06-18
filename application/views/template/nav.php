@@ -11,7 +11,7 @@
             <?php
             //tampilkan menu di bawah ini jika yang login admin
             if ($this->session->userdata('level') == 'admin') :
-            ?>
+                ?>
                 <li <?= (in_array(strtolower($this->uri->segment(1)), ['barang', 'tambah_barang', 'edit_barang'])) ? 'class="active"' : ''; ?>>
                     <a href="<?= site_url('barang'); ?>"><i class="fa fa-cubes"></i> Data Barang</a>
                 </li>
@@ -110,12 +110,12 @@
                 </li> -->
             <?php
             endif;
-            ?>
+?>
 
             <?php
-            //tampilkan menu di bawah ini jika yang login pegawai
-            if ($this->session->userdata('level') == 'pegawai') :
-            ?>
+//tampilkan menu di bawah ini jika yang login pegawai
+if ($this->session->userdata('level') == 'pegawai') :
+    ?>
                <li <?= (in_array(strtolower($this->uri->segment(1)), ['stok_harian', 'stok_bulanan', 'stok_tahunan'])) ? 'class="active"' : ''; ?>>
                     <a href="#pageStokBarang" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <i class="fa fa-file-text-o"></i> Laporan Stok Barang
@@ -191,8 +191,8 @@
                     </ul>
                 </li> -->
             <?php
-            endif;
-            ?>
+endif;
+?>
 
         </ul>
 
