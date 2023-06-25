@@ -64,7 +64,7 @@ function tanggal_indo($tgl)
             }
 
             echo '<tr>';
-            echo '<td colspan="9" class="text-center"><b>Total Biaya</b></td>';
+            echo '<td colspan="9" class="text-center"><b>Total Pemasukan</b></td>';
             echo '<td><b><span class="float-left">Rp.</span><span class="float-right">' . number_format($total, 0, ',', '.') . '</span></b></td>';
             echo '</tr>';
             echo '<tr>';
