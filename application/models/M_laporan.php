@@ -1,14 +1,15 @@
 <?php
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class M_laporan extends CI_Model
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
-    function getDataStokHarian($tanggal)
+    public function getDataStokHarian($tanggal)
     {
         $table = 'tbl_barang b
                     LEFT JOIN
@@ -35,7 +36,7 @@ class M_laporan extends CI_Model
         return $this->db->get();
     }
 
-    function getDataStokBulanan($bulan, $tahun)
+    public function getDataStokBulanan($bulan, $tahun)
     {
 
         $tanggal1 = $tahun . '-' . $bulan . '-01';
@@ -65,7 +66,7 @@ class M_laporan extends CI_Model
         return $this->db->get();
     }
 
-    function getDataStokTahunan($tahun)
+    public function getDataStokTahunan($tahun)
     {
         $table = 'tbl_barang b
                     LEFT JOIN
@@ -92,7 +93,7 @@ class M_laporan extends CI_Model
         return $this->db->get();
     }
 
-    function getDataPembelianHarian($tanggal)
+    public function getDataPembelianHarian($tanggal)
     {
         $select = 'p.id_pembelian AS id_pembelian, nama_barang, brand, dp.harga AS harga, qty, nama_supplier, (SELECT COUNT(*) FROM tbl_detail_pembelian WHERE id_pembelian = p.id_pembelian) AS row';
 
@@ -111,7 +112,7 @@ class M_laporan extends CI_Model
         return $this->db->get();
     }
 
-    function getDataPembelianBulanan($bulan, $tahun)
+    public function getDataPembelianBulanan($bulan, $tahun)
     {
         $tgl1 = $tahun . '-' . $bulan . '-01';
         $tgl2 = $tahun . '-' . $bulan . '-31';
@@ -133,7 +134,7 @@ class M_laporan extends CI_Model
         return $this->db->get();
     }
 
-    function getDataPenjualanHarian($tanggal)
+    public function getDataPenjualanHarian($tanggal)
     {
         $select = 'p.id_penjualan AS id_penjualan, nama_barang, brand, dp.harga AS harga, dp.qty AS qty, nama_pembeli, dpm.harga as harga_beli, dp.harga as harga_jual, (SELECT COUNT(*) FROM tbl_detail_penjualan WHERE id_penjualan = p.id_penjualan) AS row';
 
@@ -151,8 +152,8 @@ class M_laporan extends CI_Model
 
         return $this->db->get();
     }
-    
-    function getDataPenjualanBulanan($bulan, $tahun)
+
+    public function getDataPenjualanBulanan($bulan, $tahun)
     {
         $tgl1 = $tahun . '-' . $bulan . '-01';
         $tgl2 = $tahun . '-' . $bulan . '-31';
