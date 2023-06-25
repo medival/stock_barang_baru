@@ -22,7 +22,7 @@
 
                 <li <?= (in_array(strtolower($this->uri->segment(1)), ['supplier', 'tambah_supplier', 'edit_supplier'])) ? 'class="active"' : ''; ?>>
                     <a href="<?= site_url('supplier'); ?>">
-                        <i class="fa fa-truck"></i> Data Distributor
+                        <i class="fa fa-truck"></i> Data Supplier
                     </a>
                 </li>
 

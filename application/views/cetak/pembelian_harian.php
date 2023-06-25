@@ -20,7 +20,7 @@ function tanggal_indo($tgl)
         <tr>
             <th scope="col">#</th>
             <th scope="col">ID Barang</th>
-            <th scope="col">Nama Distributor</th>
+            <th scope="col">Nama Supplier</th>
             <th scope="col">Nama Barang</th>
             <th scope="col">Brand</th>
             <th scope="col" class="text-center">Jumlah</th>
@@ -58,7 +58,7 @@ function tanggal_indo($tgl)
             }
 
             echo '<tr>';
-            echo '<td colspan="7" class="text-center"><b>Total Biaya</b></td>';
+            echo '<td colspan="7" class="text-center"><b>Total Pengeluaran</b></td>';
             echo '<td><b><span class="float-left">Rp.</span><span class="float-right">' . number_format($total, 0, ',', '.') . '</span></b></td>';
             echo '</tr>';
         } else {
