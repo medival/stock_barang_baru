@@ -106,6 +106,7 @@ class M_laporan extends CI_Model
         $this->db->select($select);
         $this->db->from($table);
         $this->db->where($where);
+        $this->db->order_by('tgl_pembelian', 'ASC');
 
         return $this->db->get();
     }
@@ -139,17 +140,18 @@ class M_laporan extends CI_Model
         $table = 'tbl_penjualan p
                     JOIN tbl_detail_penjualan dp ON(p.id_penjualan = dp.id_penjualan)
                     LEFT JOIN tbl_barang b ON(dp.id_barang = b.kode_barang)
-                    LEFT JOIN tbl_detail_pembelian dpm ON (dpm.id_barang = b.kode_barang)';
+                    LEFT JOIN (SELECT id_barang, harga FROM tbl_detail_pembelian GROUP BY id_barang) dpm ON (dpm.id_barang = b.kode_barang)';
 
         $where = ['p.tgl_penjualan' => $tanggal];
 
         $this->db->select($select);
         $this->db->from($table);
         $this->db->where($where);
+        $this->db->order_by('p.tgl_penjualan', 'ASC');
 
         return $this->db->get();
     }
-
+    
     function getDataPenjualanBulanan($bulan, $tahun)
     {
         $tgl1 = $tahun . '-' . $bulan . '-01';
@@ -158,16 +160,17 @@ class M_laporan extends CI_Model
         $select = 'p.id_penjualan AS id_penjualan, nama_barang, brand, dp.harga AS harga, dp.qty AS qty, nama_pembeli, dpm.harga as harga_beli, dp.harga as harga_jual, (SELECT COUNT(*) FROM tbl_detail_penjualan WHERE id_penjualan = p.id_penjualan) AS row_penjualan, (SELECT COUNT(*) FROM tbl_penjualan JOIN tbl_detail_penjualan dp ON(tbl_penjualan.id_penjualan = dp.id_penjualan) WHERE tgl_penjualan = p.tgl_penjualan) AS row_tanggal, tgl_penjualan';
 
         $table = 'tbl_penjualan p
-                    JOIN tbl_detail_penjualan dp ON(p.id_penjualan = dp.id_penjualan)
-                    LEFT JOIN tbl_barang b ON(dp.id_barang = b.kode_barang)
-                    LEFT JOIN tbl_detail_pembelian dpm ON (dpm.id_barang = b.kode_barang)';
+                    JOIN tbl_detail_penjualan dp ON (p.id_penjualan = dp.id_penjualan)
+                    LEFT JOIN tbl_barang b ON (dp.id_barang = b.kode_barang)
+                    LEFT JOIN (SELECT id_barang, harga FROM tbl_detail_pembelian GROUP BY id_barang) dpm ON (dpm.id_barang = b.kode_barang)';
 
         $where = ['p.tgl_penjualan >=' => $tgl1, 'p.tgl_penjualan <=' => $tgl2];
 
         $this->db->select($select);
         $this->db->from($table);
         $this->db->where($where);
-        $this->db->order_by('tgl_penjualan', 'ASC');
+        $this->db->group_by('p.id_penjualan, nama_barang, brand, dp.harga, dp.qty, nama_pembeli, dpm.harga, dp.harga, p.tgl_penjualan');
+        $this->db->order_by('p.tgl_penjualan', 'ASC');
 
         return $this->db->get();
     }
