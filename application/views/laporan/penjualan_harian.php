@@ -39,6 +39,7 @@ if ($this->session->flashdata('alert')) {
             <th scope="col">Nama </th>
             <th scope="col">Nama Barang</th>
             <th scope="col">Brand</th>
+            <th scope="col">Nama Supplier</th>
             <th scope="col" class="text-center">Jumlah</th>
             <th scope="col" class="text-center">Harga Beli</th>
             <th scope="col" class="text-center">Harga Jual</th>
@@ -62,7 +63,8 @@ if ($this->session->flashdata('alert')) {
                 endif;
                 echo '<td>' . $dt->nama_barang . '</td>';
                 echo '<td>' . $dt->brand . '</td>';
-                echo '<td>' . $dt->qty . '</td>';
+                echo '<td>' . $dt->nama_supplier . '</td>';
+                echo '<td class="text-center">' . $dt->qty . '</td>';
                 echo '<td><span class="float-left">Rp.</span><span class="float-right">' . number_format($dt->harga_beli, 0, ',', '.') . '</span></td>';
                 echo '<td><span class="float-left">Rp.</span><span class="float-right">' . number_format($dt->harga_jual, 0, ',', '.') . '</span></td>';
                 echo '<td><span class="float-left">Rp.</span><span class="float-right">' . number_format((($dt->harga_jual - $dt->harga_beli) * $dt->qty), 0, ',', '.') . '</span></td>';
@@ -80,11 +82,11 @@ if ($this->session->flashdata('alert')) {
             }
 
             echo '<tr>';
-            echo '<td colspan="9" class="text-center"><b>Total Pemasukan</b></td>';
+            echo '<td colspan="10" class="text-center"><b>Total Biaya</b></td>';
             echo '<td><b><span class="float-left">Rp.</span><span class="float-right">' . number_format($total, 0, ',', '.') . '</span></b></td>';
             echo '</tr>';
             echo '<tr>';
-            echo '<td colspan="9" class="text-center"><b> Laba Hari ini </b></td>';
+            echo '<td colspan="10" class="text-center"><b> Laba Hari ini </b></td>';
             echo '<td><b><span class="float-left">Rp.</span><span class="float-right">' . number_format($totalLaba, 0, ',', '.') . '</span></b></td>';
             echo '</tr>';
         } else {

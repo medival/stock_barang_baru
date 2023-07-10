@@ -26,7 +26,10 @@ class M_penjualan extends CI_Model
 
     function getData($table = null, $where = null)
     {
+        $this->db->select('tbl_barang.id_supplier, nama_barang, kode_barang, nama_barang, brand, harga, active, stok');
         $this->db->from($table);
+        $this->db->join('tbl_supplier', 'tbl_supplier.id_supplier = tbl_barang.id_supplier');
+        // $this->db->where('tbl_barang.stok', ' tbl_barang.stok >= 0');
         $this->db->where($where);
 
         return $this->db->get();
@@ -53,12 +56,13 @@ class M_penjualan extends CI_Model
     
     function getDataPenjualan($id)
     {
-        $select = 'p.id_penjualan AS id_penjualan, tgl_penjualan, dp.harga AS harga, kode_barang, nama_barang, brand, fullname, u.id_user AS id_user, nama_pembeli';
+        $select = 'p.id_penjualan AS id_penjualan, tgl_penjualan, dp.harga AS harga, s.nama_supplier AS nama_supplier, kode_barang, dp.qty AS qty, b.nama_barang, brand, fullname, u.id_user AS id_user, nama_pembeli';
 
         $table = 'tbl_penjualan p
                     LEFT JOIN tbl_detail_penjualan dp ON(p.id_penjualan = dp.id_penjualan)
                     LEFT JOIN tbl_barang b ON(dp.id_barang = b.kode_barang)
-                    LEFT JOIN tbl_user u ON(p.id_user = u.id_user)';
+                    LEFT JOIN tbl_user u ON(p.id_user = u.id_user)
+                    LEFT JOIN tbl_supplier s ON s.id_supplier = b.id_supplier';
                     
         $where = array('p.id_penjualan' => $id);
 

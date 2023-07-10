@@ -29,10 +29,10 @@ if ($this->session->flashdata('error')) {
         <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">ID Barang</th>
+                <th scope="col">ID Penjualan</th>
                 <th scope="col">Tanggal Keluar</th>
                 <th scope="col">Nama </th>
-                <th scope="col">Jumlah Barang</th>
+                <th scope="col">Jumlah Item</th>
                 <th scope="col">Total Harga</th>
                 <th scope="col">Petugas</th>
                 <th scope="col">Opsi</th>

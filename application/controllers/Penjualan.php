@@ -68,7 +68,7 @@ class Penjualan extends CI_Controller
 
             if ($this->form_validation->run() == TRUE) {
 
-                $id = 'ID' . time();
+                $id = 'OUT' . time();
                 $tgl = date('Y-m-d', strtotime(str_replace('/', '-', $this->security->xss_clean($this->input->post('tanggal', TRUE)))));
                 $pembeli = $this->security->xss_clean($this->input->post('pembeli', TRUE));
                 $user = $this->session->userdata('UserID');
@@ -87,7 +87,9 @@ class Penjualan extends CI_Controller
                         'id_penjualan' => $id,
                         'id_barang' => $c['id'],
                         'qty' => $c['qty'],
-                        'harga' => $c['price']
+                        'harga' => $c['price'],
+                        // 'id_supplier' => $c['id_supplier'],
+                        // 'kode_barang' => $c['kode_barang']
                     ];
 
                     //push ke array cart
@@ -244,8 +246,11 @@ class Penjualan extends CI_Controller
                         'id_penjualan' => $idP,
                         'id_barang' => $c['id'],
                         'qty' => $c['qty'],
-                        'harga' => $c['price']
+                        'harga' => $c['price'],
+                        // 'id_supplier' => $c['id_supplier'], //??
+                        // 'kode_barang' => $c['kode_barang'], //??
                     ];
+
                     //hapus session
                     $this->session->unset_userdata($c['id']);
                     //push ke array cart
@@ -294,7 +299,9 @@ class Penjualan extends CI_Controller
                     'id'      => $c->kode_barang,
                     'qty'     => $c->qty,
                     'price'   => $c->harga,
-                    'name'    => $c->nama_barang
+                    'name'    => $c->nama_barang,
+                    'kode_barang' => $c->kode_barang,
+                    'id_supplier' => $c->nama_supplier
                 );
 
                 array_push($dataCart, $keranjang);
@@ -316,13 +323,14 @@ class Penjualan extends CI_Controller
     public function cari_barang_penjualan()
     {
         $this->is_login();
+        
         //cek apakah request berupa ajax atau bukan, jika bukan maka redirect ke home
         if ($this->input->is_ajax_request()) {
             //validasi data
             $this->form_validation->set_rules(
                 'id',
                 'Barang',
-                'required|min_length[4]|max_length[6]',
+                'required|min_length[4]|max_length[20]',
                 array(
                     'required' => '{field} wajib dipilih',
                     'min_length' => '{field} tidak valid',
@@ -333,11 +341,14 @@ class Penjualan extends CI_Controller
             if ($this->form_validation->run() == TRUE) {
                 //ambil data
                 $where = [
-                    'kode_barang' => $this->security->xss_clean($this->input->post('id', TRUE)), 'active' => 'Y'
+                    'kode_barang' => $this->security->xss_clean($this->input->post('id', TRUE)), 'active' => 'Y',
                 ];
                 $getBarang = $this->m_penjualan->getData('tbl_barang', $where);
+                // $getBarang = $this->m_penjualan->getData($where);
+
                 //cek jumlah data
                 if ($getBarang->num_rows() == 1) {
+                    
                     $barang = $getBarang->row();
                     $stok = $barang->stok;
                     //cari item di dalam cart
@@ -383,7 +394,7 @@ class Penjualan extends CI_Controller
             $this->form_validation->set_rules(
                 'id',
                 'Barang',
-                'required|min_length[4]|max_length[6]',
+                'required|min_length[4]|max_length[20]',
                 array(
                     'required' => '{field} wajib dipilih',
                     'min_length' => 'Isi {field} tidak valid',
@@ -406,10 +417,11 @@ class Penjualan extends CI_Controller
             if ($this->form_validation->run() == TRUE) {
                 //ambil barang sesuai kode
                 $where = [
-                    'kode_barang' => $this->security->xss_clean($this->input->post('id', TRUE)), 'active' => 'Y'
+                    'kode_barang' => $this->security->xss_clean($this->input->post('id', TRUE)), 'active' => 'Y' // ??
                 ];
 
                 $get_barang = $this->m_penjualan->getData('tbl_barang', $where);
+
 
                 if ($get_barang->num_rows() == 1) {
                     //fetch data barang dan masukkan kedalam cart
@@ -432,7 +444,9 @@ class Penjualan extends CI_Controller
                             'id'      => $b->kode_barang,
                             'qty'     => $this->security->xss_clean($this->input->post('qty', TRUE)),
                             'price'   => $b->harga,
-                            'name'    => $b->nama_barang
+                            'name'    => $b->nama_barang,
+                            'id_supplier' => $b->id_supplier,
+                            'kode_barang' => $b->kode_barang
                         );
 
                         $this->cart->insert($keranjang);
@@ -590,7 +604,7 @@ class Penjualan extends CI_Controller
             $this->form_validation->set_rules(
                 'id',
                 'Barang',
-                'required|min_length[4]|max_length[6]',
+                'required|min_length[4]|max_length[20]',
                 array(
                     'required' => '{field} wajib dipilih',
                     'min_length' => 'Isi {field} tidak valid',
@@ -756,23 +770,24 @@ class Penjualan extends CI_Controller
             $i = 1;
             foreach ($this->cart->contents() as $c) {
                 $table .= '<tr><td>' . $i++ . '</td>';
+                $table .= '<td>' . $c['kode_barang'] . '</td>'; //??
+                $table .= '<td>' . $c['id_supplier'] . '</td>'; //??
                 $table .= '<td>' . $c['name'] . '</td>';
                 $table .= '<td class="text-center">' . $c['qty'] . '</td>';
-                $table .= '<td class="text-right">' . number_format($c['price'], 0, ',', '.') . '</td>';
-                $table .= '<td class="text-right">' . number_format($c['subtotal'], 0, ',', '.') . '</td>';
+                $table .= '<td class><span class="float-left">Rp. </span> <span class="float-right">' . number_format($c['price'], 0, ',', '.') . '</span></td>';
+                $table .= '<td class><span class="float-left">Rp. </span> <span class="float-right">' . number_format($c['subtotal'], 0, ',', '.') . '</span></td>';
                 $table .= '<td class="text-center">
                                 <button type="button" class="btn btn-warning btn-sm text-white" onclick="get_item_penjualan(\'' . $c['rowid'] . '\')">Edit</button>
                                 <button type="button" class="btn btn-danger btn-sm text-white" onclick="hapus_item_penjualan(\'' . $c['rowid'] . '\')">Hapus</button>
                             </td></tr>';
             }
             $table .= '<tr>
-                        <td scope="col" colspan="4" class="text-center"><b><i>Total Harga</i></b></td>
-                        <td scope="col" class="text-right"><b>' . number_format($this->cart->total(), 0, ',', '.') . '</b></td>
-                        <td scope="col"></td>
+                        <td scope="col" colspan="7" class="text-center"><b><i>Total Harga</i></b></td>
+                        <td scope="col"><b><span class="float-left">Rp. </span> <span class="float-right">' . number_format($this->cart->total(), 0, ',', '.') . '</span></b></td>
                     </tr>';
         } else {
             $table = '<tr>
-                        <td scope="col" colspan="6" class="text-center"><i>Belum ada data</i></td>
+                        <td scope="col" colspan="8" class="text-center"><i>Belum ada data</i></td>
                     </tr>';
         }
 

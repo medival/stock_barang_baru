@@ -4,17 +4,20 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class M_pembelian extends CI_Model
 {
 
-    var $select = array('p.id_pembelian AS id_pembelian', 'tgl_pembelian', 'count(id_barang) AS jumlah', 'SUM(qty * dp.harga) AS total', 'p.id_user AS id_user', 'fullname', 'nama_supplier', 'GROUP_CONCAT(brg.nama_barang SEPARATOR ", ") AS nama_barang'); //data yang akan diambil
+    var $select = array('p.id_pembelian AS id_pembelian', 'tgl_pembelian', 'count(id_barang) AS jumlah', 'SUM(qty * dp.harga) AS total', 'p.id_user AS id_user', 'fullname', 's.nama_supplier AS nama_supplier', 'GROUP_CONCAT(brg.nama_barang SEPARATOR ", ") AS nama_barang'); //data yang akan diambil
 
     var $table           = 'tbl_pembelian p
-                            JOIN tbl_detail_pembelian dp ON(p.id_pembelian = dp.id_pembelian)
-                            JOIN tbl_user u ON(p.id_user = u.id_user)
-                            JOIN tbl_barang brg ON(dp.id_barang = brg.kode_barang)
-                            LEFT JOIN tbl_supplier s ON(p.id_supplier = s.id_supplier)';
+                            JOIN tbl_detail_pembelian dp ON (p.id_pembelian = dp.id_pembelian)
+                            JOIN tbl_user u ON (p.id_user = u.id_user)
+                            JOIN tbl_barang brg ON (dp.id_barang = brg.kode_barang)
+                            LEFT JOIN tbl_supplier s ON (s.id_supplier = brg.id_supplier)';
 
-    var $column_order    =  array(null, 'p.id_pembelian', 'tgl_pembelian', 'nama_supplier', 'jumlah', 'total', 'fullname', null); //set column field database untuk datatable order
-    var $column_search   =  array('p.id_pembelian', 'tgl_pembelian', 'fullname', 'nama_supplier'); //set column field database untuk datatable search
+    var $column_order    =  array(null, 'p.id_pembelian', 'tgl_pembelian', 'jumlah', 's.nama_supplier',  'total', 'fullname', null); //set column field database untuk datatable order
+    var $column_search   = array('p.id_pembelian', 'nama_barang', 'fullname', 's.nama_supplier', 'tgl_pembelian'); //set column field database untuk datatable search
+
     var $order = array('p.id_pembelian' => 'asc'); // default order
+
+        
 
     function __construct()
     {
@@ -24,6 +27,33 @@ class M_pembelian extends CI_Model
     function getAllData($table = null)
     {
         return $this->db->get($table);
+    }
+
+    // filter active and has with correct supplier
+    function getAllDataBarangFromDistributorAndActive($table = null)
+    {
+        $this->db->select('kode_barang, nama_barang, brand, tbl_barang.id_supplier, tbl_supplier.nama_supplier, stok, harga, active');
+        $this->db->from($table);
+        $this->db->join('tbl_supplier', 'tbl_barang.id_supplier = tbl_supplier.id_supplier', 'left');
+        $this->db->where('tbl_barang.id_supplier = tbl_supplier.id_supplier AND active = "Y"');
+
+        return $this->db->get();
+    }
+
+    // display if count > 0
+    function getAllDataSupplier() 
+    {
+        $select = 'sp.id_supplier, sp.nama_supplier, sp.alamat, sp.telp, COUNT(b.id_supplier) as jml_item';
+
+        $table = 'tbl_supplier sp
+                    LEFT JOIN tbl_barang b ON(sp.id_supplier = b.id_supplier)
+                    GROUP BY sp.id_supplier, sp.nama_supplier';
+
+        $this->db->select($select);
+        $this->db->from($table);
+
+        return $this->db->get();
+        
     }
 
     function getData($table = null, $where = null)
@@ -36,13 +66,19 @@ class M_pembelian extends CI_Model
 
     function getDataPembelian($id)
     {
-        $select = 'p.id_pembelian AS id_pembelian, tgl_pembelian, qty, dp.harga AS harga, kode_barang, nama_barang, brand, fullname, u.id_user AS id_user, nama_supplier, p.id_supplier AS id_supplier';
+        $select = 'p.id_pembelian AS id_pembelian, tgl_pembelian, qty, dp.harga AS harga, kode_barang, nama_barang, brand, fullname, u.id_user AS id_user, nama_supplier, b.id_supplier AS id_supplier';
+
+        // $table = 'tbl_pembelian p
+        //             LEFT JOIN tbl_detail_pembelian dp ON(p.id_pembelian = dp.id_pembelian)
+        //             LEFT JOIN tbl_barang b ON(dp.id_barang = b.kode_barang)
+        //             LEFT JOIN tbl_user u ON(p.id_user = u.id_user)
+        //             LEFT JOIN tbl_supplier s ON(p.id_supplier = s.id_supplier)';
 
         $table = 'tbl_pembelian p
                     LEFT JOIN tbl_detail_pembelian dp ON(p.id_pembelian = dp.id_pembelian)
                     LEFT JOIN tbl_barang b ON(dp.id_barang = b.kode_barang)
                     LEFT JOIN tbl_user u ON(p.id_user = u.id_user)
-                    LEFT JOIN tbl_supplier s ON(p.id_supplier = s.id_supplier)';
+                    LEFT JOIN tbl_supplier s ON(s.id_supplier = b.id_supplier)';
 
         $where = array('p.id_pembelian' => $id);
 
@@ -85,7 +121,8 @@ class M_pembelian extends CI_Model
 
         $this->db->select($this->select);
         $this->db->from($this->table);
-        $this->db->group_by(array('p.id_pembelian', 'tgl_pembelian', 'p.id_user', 'fullname'));
+        $this->db->group_by(array('p.id_pembelian', 'tgl_pembelian', 'fullname', 'brg.id_supplier', 's.nama_supplier'));
+        // $this->db->group_by(array('p.id_pembelian', 'tgl_pembelian', 'p.id_user', 'fullname'));
 
         $i = 0;
 
@@ -123,6 +160,30 @@ class M_pembelian extends CI_Model
 
     function get_datatables()
     {
+        // $this->db->select('p.id_pembelian AS id_pembelian,
+        //                     tgl_pembelian,
+        //                     COUNT(id_barang) AS jumlah,
+        //                     SUM(qty * dp.harga) AS total,
+        //                     p.id_user AS id_user,
+        //                     fullname,
+        //                     brg.id_supplier AS id_supplier,
+        //                     s.nama_supplier AS nama_supplier,
+        //                     GROUP_CONCAT(brg.nama_barang SEPARATOR ", ") AS nama_barang');
+        // $this->db->from('tbl_pembelian p');
+        // $this->db->join('tbl_detail_pembelian dp', 'p.id_pembelian = dp.id_pembelian');
+        // $this->db->join('tbl_user u', 'p.id_user = u.id_user');
+        // $this->db->join('tbl_barang brg', 'dp.id_barang = brg.kode_barang');
+        // $this->db->join('tbl_supplier s', 's.id_supplier = brg.id_supplier', 'left');
+        // $this->db->where('brg.id_supplier IS NOT NULL');
+        // $this->db->where('s.nama_supplier IS NOT NULL');
+        // $this->db->group_by('p.id_pembelian, tgl_pembelian, fullname, brg.id_supplier, s.nama_supplier');
+        // $this->db->order_by('p.id_pembelian', 'ASC');
+        
+
+        // $query = $this->db->get();
+
+        // return $query->result();
+
         $this->_get_datatables_query();
 
         if ($_POST['length'] != -1) {
@@ -132,6 +193,7 @@ class M_pembelian extends CI_Model
             return $query->result();
         }
     }
+
 
     function count_filtered()
     {
@@ -145,7 +207,7 @@ class M_pembelian extends CI_Model
     {
         $this->db->select($this->select);
         $this->db->from($this->table);
-        $this->db->group_by(array('p.id_pembelian', 'tgl_pembelian', 'p.id_user', 'fullname'));
+        $this->db->group_by(array('p.id_pembelian', 'tgl_pembelian', 'fullname', 'brg.id_supplier', 's.nama_supplier'));
 
         return $this->db->count_all_results();
     }

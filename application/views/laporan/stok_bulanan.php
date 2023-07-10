@@ -61,6 +61,7 @@ if ($this->session->flashdata('alert')) {
         <tr>
             <th scope="col">#</th>
             <th scope="col">Kode Barang</th>
+            <th scope="col">Supplier</th>
             <th scope="col">Nama Barang</th>
             <th scope="col">Brand</th>
             <th scope="col" class="text-center">Stok Barang</th>
@@ -78,6 +79,7 @@ if ($this->session->flashdata('alert')) {
                 echo '<tr>';
                 echo '<td>' . $i++ . '</td>';
                 echo '<td>' . $dt->kode_barang . '</td>';
+                echo '<td>' . $dt->nama_supplier . '</td>';
                 echo '<td>' . $dt->nama_barang . '</td>';
                 echo '<td>' . $dt->brand . '</td>';
                 echo '<td class="text-center">' . (($dt->stok + $penjualan) - $pembelian) . '</td>';

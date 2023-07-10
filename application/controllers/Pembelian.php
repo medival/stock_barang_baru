@@ -10,6 +10,7 @@ class Pembelian extends CI_Controller
         $this->load->library(['template', 'form_validation', 'cart']);
         //load model
         $this->load->model('m_pembelian');
+        $this->load->model('m_barang');
 
         header('Last-Modified:' . gmdate('D, d M Y H:i:s') . 'GMT');
         header('Cache-Control: no-cache, must-revalidate, max-age=0');
@@ -54,23 +55,23 @@ class Pembelian extends CI_Controller
                 )
             );
 
-            $this->form_validation->set_rules(
-                'supplier',
-                'Supplier',
-                'required|min_length[10]',
-                array(
-                    'required' => '{field} wajib dipilih',
-                    'min_length' => '{field} tidak valid'
-                )
-            );
+            // $this->form_validation->set_rules(
+            //     'id_supplier',
+            //     'Supplier',
+            //     'required',
+            //     array(
+            //         'required' => '{field} wajib dipilih',
+            //     )
+            // );
 
             if ($this->form_validation->run() == TRUE) {
 
-                $id = 'ID' . time();
+                $id = 'IN' . time();
                 $tgl = date('Y-m-d', strtotime(str_replace('/', '-', $this->security->xss_clean($this->input->post('tanggal', TRUE)))));
-                $sup = $this->security->xss_clean($this->input->post('supplier', TRUE));
+                $sup = $this->security->xss_clean($this->input->post('id_supplier', TRUE));
                 $user = $this->session->userdata('UserID');
-
+                
+                
                 $data_pembelian = [
                     'id_pembelian' => $id,
                     'tgl_pembelian' => $tgl,
@@ -85,7 +86,8 @@ class Pembelian extends CI_Controller
                         'id_pembelian' => $id,
                         'id_barang' => $c['id'],
                         'qty' => $c['qty'],
-                        'harga' => $c['price']
+                        'harga' => $c['price'],
+                        // 'id_supplier' => $c['id_supplier'] // ??
                     ];
 
                     //push ke array cart
@@ -109,8 +111,9 @@ class Pembelian extends CI_Controller
 
         $data = [
             'title' => 'Tambah Data Barang Masuk',
-            'data' => $this->m_pembelian->getData('tbl_barang', ['active' => 'Y']),
-            'supplier' => $this->m_pembelian->getAllData('tbl_supplier'),
+            'data' => $this->m_pembelian->getAllDataBarangFromDistributorAndActive('tbl_barang'),
+            // 'supplier' => $this->m_pembelian->getAllData('tbl_supplier'),
+            'supplier' => $this->m_pembelian->getAllDataSupplier(),
             'table' => $this->read_cart()
         ];
 
@@ -183,6 +186,7 @@ class Pembelian extends CI_Controller
         }
         //ambil data pembelian
         $getData = $this->m_pembelian->getDataPembelian($this->security->xss_clean($id));
+
         //hitung data
         if ($getData->num_rows() < 1) {
             redirect('data_pembelian');
@@ -207,16 +211,6 @@ class Pembelian extends CI_Controller
             );
 
             $this->form_validation->set_rules(
-                'supplier',
-                'Supplier',
-                'required|min_length[10]',
-                array(
-                    'required' => '{field} wajib dipilih',
-                    'min_length' => '{field} tidak valid'
-                )
-            );
-
-            $this->form_validation->set_rules(
                 'idP',
                 'ID Pembelian',
                 'required|min_length[10]',
@@ -230,11 +224,9 @@ class Pembelian extends CI_Controller
 
                 $idP = $this->security->xss_clean($this->input->post('idP', TRUE));
                 $tgl = date('Y-m-d', strtotime(str_replace('/', '-', $this->security->xss_clean($this->input->post('tanggal', TRUE)))));
-                $sup = $this->security->xss_clean($this->input->post('supplier', TRUE));
 
                 $data_pembelian = [
                     'tgl_pembelian' => $tgl,
-                    'id_supplier' => $sup
                 ];
 
                 //baca cart dan memasukkannya dalam array untuk disimpan
@@ -245,7 +237,7 @@ class Pembelian extends CI_Controller
                         'id_pembelian' => $idP,
                         'id_barang' => $c['id'],
                         'qty' => $c['qty'],
-                        'harga' => $c['price']
+                        'harga' => $c['price'],
                     ];
 
                     //push ke array cart
@@ -280,10 +272,11 @@ class Pembelian extends CI_Controller
 
             foreach ($getData->result() as $c) {
                 $keranjang = array(
-                    'id'      => $c->kode_barang,
-                    'qty'     => $c->qty,
-                    'price'   => $c->harga,
-                    'name'    => $c->nama_barang
+                    'id'            => $c->kode_barang,
+                    'qty'           => $c->qty,
+                    'price'         => $c->harga,
+                    'name'          => $c->nama_barang,
+                    'id_supplier'   => $c->id_supplier
                 );
 
                 array_push($dataCart, $keranjang);
@@ -295,8 +288,10 @@ class Pembelian extends CI_Controller
         $data = [
             'title' => 'Edit Data Barang Masuk',
             'fdata' => $fData,
-            'data' => $this->m_pembelian->getData('tbl_barang', ['active' => 'Y']),
-            'supplier' => $this->m_pembelian->getAllData('tbl_supplier'),
+            // 'data' => $this->m_pembelian->getData('tbl_barang', ['active' => 'Y']),
+            // 'supplier' => $this->m_pembelian->getAllData('tbl_supplier'),
+            'data' => $this->m_pembelian->getAllDataBarangFromDistributorAndActive('tbl_barang'),
+            'supplier' => $this->m_pembelian->getAllDataSupplier(),
             'table' => $this->read_cart()
         ];
 
@@ -311,9 +306,18 @@ class Pembelian extends CI_Controller
         if ($this->input->is_ajax_request()) {
             //validasi data
             $this->form_validation->set_rules(
+                'id_supplier',
+                'Supplier',
+                'required',
+                array(
+                    'required' => '{field} wajib dipilih',
+                )
+            );
+
+            $this->form_validation->set_rules(
                 'barangx',
                 'Barang',
-                'required|min_length[3]|max_length[6]',
+                'required|min_length[3]|max_length[20]',
                 array(
                     'required' => '{field} wajib dipilih',
                     'min_length' => 'Isi {field} tidak valid',
@@ -355,7 +359,8 @@ class Pembelian extends CI_Controller
                         'id'      => $b->kode_barang,
                         'qty'     => $this->security->xss_clean($this->input->post('jumlah', TRUE)),
                         'price'   => $this->security->xss_clean(str_replace('.', '', $this->input->post('harga', TRUE))),
-                        'name'    => $b->nama_barang
+                        'name'    => $b->nama_barang,
+                        'id_supplier' => $b->id_supplier, // ??
                     );
 
                     $this->cart->insert($keranjang);
@@ -390,6 +395,47 @@ class Pembelian extends CI_Controller
         }
     }
 
+    public function cari_barang_di_supplier()
+    {
+        $this->is_login();
+        //cek apakah request berupa ajax atau bukan, jika bukan maka redirect ke home
+        if ($this->input->is_ajax_request()) {
+            // $data = "AJAX from PHP request received successfully.";
+            // echo json_encode($data);
+
+            //validasi data
+            $this->form_validation->set_rules(
+                'id_supplier',
+                'id_supplier',
+                'required',
+                array(
+                    'required' => '{field} wajib dipilih',
+                )
+            );
+
+            if ($this->form_validation->run() == TRUE) {
+                $id_supplier=$this->input->post('id_supplier', TRUE);
+                $data = 'Id of Supplier is ' . $id_supplier;
+
+                $itemFromSupplier = $this->m_barang->getItemFromSupplier($id_supplier);
+
+                // $data2 = $itemFromSupplier;
+                // echo json_encode($data);
+                echo json_encode($itemFromSupplier);
+
+            }
+            else {
+                $alert = '<div class="alert alert-danger" role="alert">Data barang tidak ditemukan</div>';
+
+                echo json_encode($array);
+            }
+
+            
+        } else {
+            redirect('data_penjualan');
+        }
+    }
+
     public function get_item()
     {
         //cek login
@@ -406,9 +452,10 @@ class Pembelian extends CI_Controller
                     'barang' => $get_item['id'],
                     'qty' => $get_item['qty'],
                     'harga' => number_format($get_item['price'], 0, ',', '.'),
-                    'rowid' => '<input type="hidden" id="rowid" value="' . $get_item['rowid'] . '" />',
+                    'rowid' => '<input id="rowid" type="hidden" value="' . $get_item['rowid'] . '" />',
                     'table' => $this->read_cart(),
-                    'status' => 'true'
+                    'status' => 'true',
+                    // 'id_supplier' => $get_item['id_supplier'], // ??
                 ];
             } else {
                 $arr = [
@@ -417,7 +464,8 @@ class Pembelian extends CI_Controller
                     'harga' => '',
                     'rowid' => '',
                     'table' => $this->read_cart(),
-                    'status' => 'false'
+                    'status' => 'false',
+                    // 'id_supplier' => $get_item['id_supplier'], // ??
                 ];
             }
 
@@ -437,24 +485,22 @@ class Pembelian extends CI_Controller
             $this->form_validation->set_rules(
                 'jumlah',
                 'Jumlah',
-                "required|min_length[1]|regex_match[/^[0-9]+$/]|greater_than[0]",
+                "required|min_length[1]|regex_match[/^[0-9]+$/]",
                 array(
                     'required' => '{field} wajib diisi',
                     'min_length' => 'Isi {field} tidak valid',
                     'regex_match' => '{field} hanya boleh angka',
-                    'greater_than' => '{field} harus lebih dari nol'
                 )
             );
 
             $this->form_validation->set_rules(
                 'harga',
                 'Harga Satuan',
-                "required|min_length[2]|regex_match[/^[0-9.]+$/]|greater_than[0]",
+                "required|min_length[2]|regex_match[/^[0-9.]+$/]",
                 array(
                     'required' => '{field} wajib diisi',
                     'min_length' => 'Isi {field} tidak valid',
                     'regex_match' => '{field} hanya boleh angka',
-                    'greater_than' => '{field} harus lebih dari nol'
                 )
             );
 
@@ -581,8 +627,8 @@ class Pembelian extends CI_Controller
                 $row[] = $no;
                 $row[] = $i->id_pembelian;
                 $row[] = $this->tanggal_indo($i->tgl_pembelian);
-                $row[] = $i->nama_supplier;
                 $row[] = $i->jumlah;
+                $row[] = $i->nama_supplier;
                 $row[] = implode('<br>', explode(',', $i->nama_barang));
                 $row[] = '<span class="pr-3">' . number_format($i->total, 0, ',', '.') . ',-</span>';
                 $row[] = $i->fullname;
@@ -614,7 +660,8 @@ class Pembelian extends CI_Controller
             foreach ($this->cart->contents() as $c) {
                 $table .= '<tr><td>' . $i++ . '</td>';
                 $table .= '<td>' . $c['name'] . '</td>';
-                $table .= '<td class="text-center">' . $c['qty'] . '</td>';
+                $table .= '<td>' . $c['id_supplier'] . '</td>'; //??
+                $table .= '<td>' . $c['qty'] . '</td>';
                 $table .= '<td class="text-right">' . number_format($c['price'], 0, ',', '.') . '</td>';
                 $table .= '<td class="text-right">' . number_format($c['subtotal'], 0, ',', '.') . '</td>';
                 $table .= '<td class="text-center">
@@ -624,7 +671,7 @@ class Pembelian extends CI_Controller
             }
         } else {
             $table = '<tr>
-                        <td scope="col" colspan="6" class="text-center"><i>Belum ada data</i></td>
+                        <td scope="col" colspan="8" class="text-center"><i>Belum ada data</i></td>
                     </tr>';
         }
 

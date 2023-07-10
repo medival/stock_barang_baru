@@ -22,7 +22,7 @@ class Data_supplier extends CI_Controller
         $this->is_admin();
 
         $data = [
-            'title' => 'Data Supplier'
+            'title' => 'Data Distributor'
         ];
 
         $this->template->kasir('supplier/index', $data);
@@ -34,6 +34,18 @@ class Data_supplier extends CI_Controller
         //ketika user mengklik submit
         if ($this->input->post('submit', TRUE) == 'submit') {
             //validasi form
+            $this->form_validation->set_rules(
+                'id_supplier',
+                'ID Supplier',
+                "required|min_length[3]|max_length[6]|regex_match[/^[A-Z a-z.0-9']+$/]",
+                array(
+                    'required' => '{field} wajib diisi',
+                    'min_length' => '{field} minimal 3 karakter',
+                    'max_length' => '{field} maksimal 6 karakter',
+                    'regex_match' => '{field} tidak valid'
+                )
+            );
+
             $this->form_validation->set_rules(
                 'nama_supplier',
                 'Nama Supplier',
@@ -75,7 +87,7 @@ class Data_supplier extends CI_Controller
             //jika validasi berhasil maka lakukan proses penyimpanan
             if ($this->form_validation->run() == TRUE) {
                 //tampung data ke variabel
-                $id = 'ID' . time();
+                $id = $this->security->xss_clean($this->input->post('id_supplier', TRUE));
                 $nama = $this->security->xss_clean($this->input->post('nama_supplier', TRUE));
                 $telp = $this->security->xss_clean($this->input->post('hp', TRUE));
                 $alamat = $this->security->xss_clean($this->input->post('alamat', TRUE));
@@ -90,7 +102,7 @@ class Data_supplier extends CI_Controller
                 $simpan = $this->m_supplier->save('tbl_supplier', $data_simpan);
 
                 if ($simpan) {
-                    $this->session->set_flashdata('success', 'Data Supplier berhasil ditambahkan..');
+                    $this->session->set_flashdata('success', 'Data Distributor berhasil ditambahkan..');
 
                     redirect('supplier');
                 }
@@ -112,12 +124,13 @@ class Data_supplier extends CI_Controller
         if ($this->input->post('submit', TRUE) == 'submit') {
             //validasi form
             $this->form_validation->set_rules(
-                'idSupplier',
+                'id_supplier',
                 'ID Supplier',
-                'required|min_length[10]',
+                'required|min_length[3]|max_length[6]',
                 array(
                     'required' => '{field} wajib diisi',
-                    'min_length' => '{field} tidak valid'
+                    'min_length' => '{field} min 3 karakter',
+                    'max_length' => '{field} max 6 karakter'
                 )
             );
 
@@ -162,21 +175,22 @@ class Data_supplier extends CI_Controller
             //jika validasi berhasil maka lakukan proses penyimpanan
             if ($this->form_validation->run() == TRUE) {
                 //tampung data ke variabel
-                $idSupplier = $this->security->xss_clean($this->input->post('idSupplier', TRUE));
+                $id_supplier = $this->security->xss_clean($this->input->post('id_supplier', TRUE));
                 $nama = $this->security->xss_clean($this->input->post('nama_supplier', TRUE));
                 $telp = $this->security->xss_clean($this->input->post('hp', TRUE));
                 $alamat = $this->security->xss_clean($this->input->post('alamat', TRUE));
 
                 $data_update = [
+                    'id_supplier' => $id_supplier,
                     'nama_supplier' => $nama,
                     'alamat' => $alamat,
                     'telp' => $telp
                 ];
 
-                $up = $this->m_supplier->update('tbl_supplier', $data_update, ['id_supplier' => $idSupplier]);
+                $up = $this->m_supplier->update('tbl_supplier', $data_update, ['id_supplier' => $id]);
 
                 if ($up) {
-                    $this->session->set_flashdata('success', 'Data Supplier berhasil diperbarui..');
+                    $this->session->set_flashdata('success', 'Data Distributor berhasil diperbarui..');
 
                     redirect('supplier');
                 }
@@ -201,7 +215,7 @@ class Data_supplier extends CI_Controller
         $this->template->kasir('supplier/form_edit', $data);
     }
 
-    public function hapus_data()
+    public function hapus_supplier()
     {
         //cek login
         $this->is_admin();
@@ -211,10 +225,10 @@ class Data_supplier extends CI_Controller
             $this->form_validation->set_rules(
                 'id',
                 'ID Supplier',
-                "required|min_length[10]",
+                "required|max_length[6]",
                 array(
                     'required' => '{field} tidak valid',
-                    'min_length' => 'Isi {field} tidak valid'
+                    'max_length' => '{field} max 6 karakter'
                 )
             );
 
@@ -227,10 +241,10 @@ class Data_supplier extends CI_Controller
                 if ($hapus) {
                     echo json_encode(['message' => 'success']);
                 } else {
-                    echo json_encode(['message' => 'failed']);
+                    echo json_encode(['message' => 'failed $id']);
                 }
             } else {
-                echo json_encode(['message' => 'failed']);
+                echo json_encode(['message' => 'failedssss']);
             }
         } else {
             redirect('dashboard');

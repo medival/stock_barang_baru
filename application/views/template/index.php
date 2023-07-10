@@ -258,7 +258,10 @@
             var barangx = $('#barangx').val();
             var jumlah = $('#jumlahx').val();
             var harga = $('#harga').val();
+            var id_supplier = $('#id_supplier').val();
             var csrf_token = Cookies.get('csrf_cookie');
+
+            console.log(`console log from tambah cart ${id_supplier}`);
 
             $.ajax({
                 url: "<?= site_url('tambah_cart'); ?>",
@@ -267,6 +270,7 @@
                     barangx: barangx,
                     jumlah: jumlah,
                     harga: harga,
+                    id_supplier: id_supplier,
                     csrf_token: csrf_token
                 },
                 success: function(obj) {
@@ -277,9 +281,9 @@
                     $('[name="csrf_token"]').val(Cookies.get('csrf_cookie'));
 
                     if (x.status == 'success') {
-                        $('.barang-select').val(null).trigger('change');
+                        $('.pilih-supplier').val(null).trigger('change');
                         $('#jumlahx').val('');
-                        $('#harga').val('');
+                        $('#harga').val('');       
                     }
                 }
             });
@@ -307,6 +311,8 @@
 
                     if (x.status == 'true') {
                         $('#barangx').attr('disabled', true);
+                        $('#id_supplier').attr('disabled', true);
+                        // $('#id_supplier').val(x.id_supplier); ??
                         $('#jumlahx').focus();
                         $('#btn-act').html('<button type="button" class="btn btn-success btn-sm" onclick="update_cart()">Update Barang</button>');
                     }
@@ -333,18 +339,22 @@
                     var x = $.parseJSON(obj);
 
                     $('#daftar-beli').html(x.table);
+
                     $('#message').html(x.alert);
                     $('[name="csrf_token"]').val(Cookies.get('csrf_cookie'));
 
                     if (x.status == 'success') {
+                        $('#id_supplier').removeAttr('disabled');
                         $('.barang-select').val(null).trigger('change');
                         $('#barangx').removeAttr('disabled');
                         $('#jumlahx').val('');
                         $('#harga').val('');
                         $('#rowid-field').html('');
                         $('#btn-act').html('<button type="button" class="btn btn-success btn-sm" onclick="tambah_cart()">Tambah Barang</button>');
+                        // console.log("WHAT IS THIS");
                     } else {
                         $('#jumlahx').focus();
+                        // console.log("ERROR IN HERE");
                     }
                 }
             });
@@ -470,6 +480,58 @@
             }
         });
 
+        $('.pilih-supplier').change(function() {
+            var id_supplier = $('.pilih-supplier').val();
+            var csrf_token = Cookies.get('csrf_cookie');
+            
+            if (id_supplier == null || id_supplier == '') {
+                return false;
+            }
+
+            console.log(id_supplier);
+
+            $.ajax({
+                url: "<?= site_url('cari_barang_di_supplier'); ?>",
+                method: "POST",
+                data: {
+                    id_supplier: id_supplier,
+                    csrf_token: csrf_token
+                },
+
+                // success: function(response) {
+                //     alert(response);
+                //     // Handle the response from the server
+                // },
+                // error: function(xhr, status, error) {
+                //     console.log("AJAX request encountered an error.");
+                //     // Handle the error if necessary
+                // }
+
+                success: function(data) {
+                    var result = JSON.parse(data);
+                    var kodeBarangList = [];
+                    var namaBarangList = [];
+                    var selectOptions = '';
+
+
+                    // Extract kode_barang and nama_barang from each object
+                    if (result.length > 0) {
+                        for (var i = 0; i < result.length; i++) {
+                            var kodeBarang = result[i].kode_barang;
+                            var namaBarang = result[i].nama_barang;
+
+                            selectOptions += '<option value="' + kodeBarang + '">' + namaBarang + '</option>';
+                        }
+                    } else {
+
+                        selectOptions = '<option value="">Tidak ada barang dari supplier ini</option>';
+                    }
+
+                    $('.item-dari-supplier').html(selectOptions);
+                }
+            });
+        });
+        
         $('.pilih-barang').change(function() {
             var id = $('.pilih-barang').val();
             var csrf_token = Cookies.get('csrf_cookie');
@@ -505,6 +567,7 @@
             var id = $('#barang-penjualan').val();
             var sisa = $('#sisa').val();
             var qty = $('#jumlahx').val();
+            var id_supplier = $('#id_supplier').val(); // ??
             var csrf_token = Cookies.get('csrf_cookie');
             $('#barang-penjualan').addClass('pilih-barang');
 
@@ -684,6 +747,7 @@
 
                     if (x.status == 'success') {
                         $('.barang-select').val(null).trigger('change');
+                        // $('#id_supplier').removeAttr('disabled');
                         $('#barangx').removeAttr('disabled');
                         $('#jumlahx').val('');
                         $('#sisa').val('');
@@ -778,10 +842,12 @@
 
                         var a = $.parseJSON(obj);
 
+                        console.log(a);
+
                         if (a.message == 'success') {
                             swal({
                                 title: "Success!",
-                                text: "Data supplier berhasil dihapus",
+                                text: "Data Distributor berhasil dihapus",
                                 type: "success",
                                 showCancelButton: false,
                                 showConfirmButton: false,
@@ -797,7 +863,7 @@
                         } else {
                             swal({
                                 title: "Error!",
-                                text: "Data supplier gagal dihapus",
+                                text: "Data Distributor gagal dihapus",
                                 type: "error",
                                 showCancelButton: false,
                                 showConfirmButton: false,

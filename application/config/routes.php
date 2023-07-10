@@ -80,7 +80,7 @@ $route['supplier'] = 'data_supplier/index';
 $route['supplier/(:any)'] = 'data_supplier/edit_supplier/$1';
 $route['ajax_supplier'] = 'data_supplier/ajax_supplier';
 $route['tambah_supplier'] = 'data_supplier/tambah_supplier';
-$route['hapus_supplier'] = 'data_supplier/hapus_data';
+$route['hapus_supplier'] = 'data_supplier/hapus_supplier';
 
 //route data pembelian barang
 $route['data_pembelian'] = 'pembelian/index';
@@ -94,6 +94,7 @@ $route['get_item'] = 'pembelian/get_item';
 $route['update_cart'] = 'pembelian/update_cart';
 $route['remove_item'] = 'pembelian/remove_item';
 $route['ajax_pembelian'] = 'pembelian/ajax_pembelian';
+$route['cari_barang_di_supplier'] = 'pembelian/cari_barang_di_supplier';
 
 //route data penjualan barang
 $route['data_penjualan'] = 'penjualan/index';

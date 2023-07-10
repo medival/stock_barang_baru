@@ -35,8 +35,8 @@ if ($this->session->flashdata('alert')) {
     <thead class="thead-dark">
         <tr>
             <th scope="col">#</th>
-            <th scope="col">ID Barang</th>
-            <th scope="col">Nama Supplier</th>
+            <th scope="col">ID Pembelian</th>
+            <th scope="col">Nama Distributor</th>
             <th scope="col">Nama Barang</th>
             <th scope="col">Brand</th>
             <th scope="col" class="text-center">Jumlah</th>
@@ -56,11 +56,11 @@ if ($this->session->flashdata('alert')) {
                 if ($row == 1) :
                     echo '<td rowspan="' . $dt->row . '">' . $i++ . '</td>';
                     echo '<td rowspan="' . $dt->row . '">' . $dt->id_pembelian . '</td>';
-                    echo '<td rowspan="' . $dt->row . '">' . $dt->nama_supplier . '</td>';
                 endif;
+                echo '<td>' . $dt->nama_supplier . '</td>';
                 echo '<td>' . $dt->nama_barang . '</td>';
                 echo '<td>' . $dt->brand . '</td>';
-                echo '<td>' . $dt->qty . '</td>';
+                echo '<td class="text-center">' . $dt->qty . '</td>';
                 echo '<td><span class="float-left">Rp.</span><span class="float-right">' . number_format($dt->harga, 0, ',', '.') . '</span></td>';
                 echo '<td><span class="float-left">Rp.</span><span class="float-right">' . number_format(($dt->harga * $dt->qty), 0, ',', '.') . '</span></td>';
                 echo '</tr>';
@@ -74,7 +74,7 @@ if ($this->session->flashdata('alert')) {
             }
 
             echo '<tr>';
-            echo '<td colspan="7" class="text-center"><b>Total Pengeluaran</b></td>';
+            echo '<td colspan="7" class="text-center"><b>Total Biaya</b></td>';
             echo '<td><b><span class="float-left">Rp.</span><span class="float-right">' . number_format($total, 0, ',', '.') . '</span></b></td>';
             echo '</tr>';
         } else {

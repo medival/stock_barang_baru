@@ -20,6 +20,23 @@
     </div>
 
     <div class="form-group row">
+        <label for="supplier" class="col-sm-3 col-form-label">Supplier</label>
+        <div class="col-sm-6">
+            <select class="custom-select custom-select-sm supplier <?= (form_error('supplier')) ? 'is-invalid' : ''; ?>" id="supplier" name="supplier">
+                <option value="" disabled selected>Pilih Supplier</option>
+                <?php foreach ($supplier->result() as $s) : ?>
+                    <option value="<?= $s->id_supplier; ?>">
+                        <?= $s->id_supplier; echo "  (". $s->nama_supplier. ")" ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <div class="invalid-feedback">
+                <?= form_error('supplier', '<p class="error-message">', '</p>'); ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
         <label for="nama_barang" class="col-sm-3 col-form-label">Nama Barang</label>
         <div class="col-sm-9">
             <input type="text" class="form-control form-control-sm <?= (form_error('nama_barang')) ? 'is-invalid' : ''; ?>" id="nama_barang" name="nama_barang" placeholder="Nama Barang" value="<?= set_value('nama_barang'); ?>">

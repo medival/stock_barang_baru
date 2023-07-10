@@ -10,6 +10,7 @@ class Data_barang extends CI_Controller
         $this->load->library(['template', 'form_validation']);
         //load model
         $this->load->model('m_barang');
+        $this->load->model('m_supplier');
 
         header('Last-Modified:' . gmdate('D, d M Y H:i:s') . 'GMT');
         header('Cache-Control: no-cache, must-revalidate, max-age=0');
@@ -51,6 +52,15 @@ class Data_barang extends CI_Controller
             );
 
             $this->form_validation->set_rules(
+                'supplier',
+                'Supplier',
+                'required',
+                array(
+                    'required' => '{field} wajib dipilih',
+                )
+            );
+
+            $this->form_validation->set_rules(
                 'nama_barang',
                 'Nama Barang',
                 'required|min_length[3]|max_length[255]',
@@ -84,8 +94,15 @@ class Data_barang extends CI_Controller
             //jika data sudah valid maka lakukan proses penyimpanan
             if ($this->form_validation->run() == TRUE) {
                 //masukkan data ke variable array
+                $supplier = $this->security->xss_clean($this->input->post('supplier', TRUE));
+                $kode_barangx = $this->security->xss_clean($this->input->post('kode', TRUE));
+                $month=date('m');
+                $year=date('Y');
+                $kode_barang = $kode_barangx . $supplier . $month . $year;
+
                 $simpan = array(
-                    'kode_barang' => $this->security->xss_clean($this->input->post('kode', TRUE)),
+                    'kode_barang' => $kode_barang,
+                    'id_supplier' => $supplier,
                     'nama_barang' => $this->security->xss_clean($this->input->post('nama_barang', TRUE)),
                     'brand' => $this->security->xss_clean($this->input->post('brand', TRUE)),
                     'harga' => str_replace('.', '', $this->security->xss_clean($this->input->post('harga', TRUE)))
@@ -103,7 +120,8 @@ class Data_barang extends CI_Controller
         }
 
         $data = [
-            'title' => 'Tambah Data Barang'
+            'title' => 'Tambah Data Barang',
+            'supplier' => $this->m_supplier->getAllData('tbl_supplier'),
         ];
 
         $this->template->kasir('data_barang/form_tambah', $data);
@@ -138,9 +156,9 @@ class Data_barang extends CI_Controller
             //cek apakah user merubah kode barang atau tidak
             $b = $barang->row();
             if ($b->kode_barang == $this->security->xss_clean($this->input->post('ID', TRUE))) {
-                $rules_kode_barang = 'required|min_length[3]|max_length[6]';
+                $rules_kode_barang = 'required|min_length[3]|max_length[20]';
             } else {
-                $rules_kode_barang = 'required|min_length[3]|max_length[6]|is_unique[tbl_barang.kode_barang]';
+                $rules_kode_barang = 'required|min_length[3]|max_length[20]|is_unique[tbl_barang.kode_barang]';
             }
             //set rules form validasi
             $this->form_validation->set_rules(
@@ -152,6 +170,15 @@ class Data_barang extends CI_Controller
                     'min_length' => '{field} minimal 3 karakter',
                     'max_length' => '{field} maksimal 6 karakter',
                     'is_unique' => 'Kode sudah terdaftar'
+                )
+            );
+
+            $this->form_validation->set_rules(
+                'supplier',
+                'Supplier',
+                'required',
+                array(
+                    'required' => '{field} wajib dipilih',
                 )
             );
 
@@ -196,12 +223,34 @@ class Data_barang extends CI_Controller
                     'max_length' => '{field} hanya boleh 1 karakter',
                     'regex_match' => 'Input {field} tidak valid'
                 )
-            );
+            );          
 
             //jika validasi berhasil
-            if ($this->form_validation->run() == TRUE) {
-                //masukkan data ke variable array
+            if ($this->form_validation->run() == TRUE) {        
+                
+                // ambil tahun di kode barang
+                $year = substr($kode_barang, -4);
+                // ambil bulan di kode barang
+                $month = substr($kode_barang, -6, 2);
+                // check current supplier
+                $current_id_supplier = $this->m_barang->getSpecificSupplier($kode_barang);
+                
+                $id_barang_without_kodex=$current_id_supplier . $month . $year;
+
+                // get kodex which is kode barang
+                $kodex = str_replace($id_barang_without_kodex, '', $kode_barang);
+
+                $id_supplier = $this->security->xss_clean($this->input->post('supplier', TRUE));
+
+                // new kode barang
+                $new_kode_barang = $kodex . $id_supplier . $month . $year;
+
+                echo $new_kode_barang;
+               
+                // masukkan data ke variable array
                 $update = array(
+                    'kode_barang' => $new_kode_barang,
+                    'id_supplier' => $id_supplier,
                     'nama_barang' => $this->security->xss_clean($this->input->post('nama_barang', TRUE)),
                     'brand' => $this->security->xss_clean($this->input->post('brand', TRUE)),
                     'harga' => str_replace('.', '', $this->security->xss_clean($this->input->post('harga', TRUE))),
@@ -221,6 +270,7 @@ class Data_barang extends CI_Controller
 
         $data = [
             'title' => 'Edit Data Barang',
+            'supplier' => $this->m_supplier->getAllData('tbl_supplier'),
             'barang' => $barang->row()
         ];
 
@@ -258,6 +308,7 @@ class Data_barang extends CI_Controller
                 $row = array();
                 $row[] = $no;
                 $row[] = $i->kode_barang;
+                $row[] = $i->id_supplier;
                 $row[] = $i->nama_barang;
                 $row[] = $i->brand;
                 $row[] = $i->stok;

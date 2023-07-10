@@ -15,8 +15,23 @@ class M_supplier extends CI_Model
 
     function getAllData($table = null)
     {
+        // $this->db->select('kode_barang, nama_barang, brand, tbl_barang.id_supplier, tbl_supplier.nama_supplier, stok, harga, active');
+        // $this->db->from('tbl_barang');
+        // $this->db->join('tbl_supplier', 'tbl_barang.id_supplier = tbl_supplier.id_supplier', 'left');
+        // $this->db->where('tbl_barang.id_supplier = tbl_supplier.id_supplier');
+
         return $this->db->get($table);
     }
+
+    // function getAllDataBarang($table = null)
+    // {
+    //     $this->db->select('kode_barang, nama_barang, brand, tbl_barang.id_supplier, tbl_supplier.nama_supplier, stok, harga, active');
+    //     $this->db->from('tbl_barang');
+    //     $this->db->join('tbl_supplier', 'tbl_barang.id_supplier = tbl_supplier.id_supplier', 'left');
+    //     $this->db->where('tbl_barang.id_supplier = tbl_supplier.id_supplier');
+
+    //     return $this->db->get();
+    // }
 
     function getData($table = null, $where = null)
     {

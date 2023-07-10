@@ -25,11 +25,11 @@
     <div class="form-group row">
         <label for="supplier" class="col-sm-2 col-form-label">Supplier</label>
         <div class="col-sm-6">
-            <select class="custom-select custom-select-sm supplier <?= (form_error('supplier')) ? 'is-invalid' : ''; ?>" id="supplier" name="supplier">
+            <select class="custom-select custom-select-sm pilih-supplier <?= (form_error('supplier')) ? 'is-invalid' : ''; ?>" id="id_supplier" name="supplier">
                 <option value="" disabled selected>Pilih Supplier</option>
                 <?php foreach ($supplier->result() as $s) : ?>
                     <option value="<?= $s->id_supplier; ?>">
-                        <?= $s->nama_supplier; ?>
+                        <?= $s->nama_supplier .' (' . $s->jml_item . ' item)' ?>
                     </option>
                 <?php endforeach; ?>
             </select>
@@ -41,13 +41,8 @@
     <div class="form-group row">
         <label for="barangx" class="col-sm-2 col-form-label">Barang</label>
         <div class="col-sm-6">
-            <select class="custom-select custom-select-sm barang-select" id="barangx">
+            <select class="custom-select custom-select-sm item-dari-supplier" id="barangx">  <!-- barang-select-->
                 <option value="" disabled selected>Pilih Barang</option>
-                <?php foreach ($data->result() as $d) : ?>
-                    <option value="<?= $d->kode_barang; ?>">
-                        <?= $d->nama_barang . ' ( ' . $d->brand . ' )'; ?>
-                    </option>
-                <?php endforeach; ?>
             </select>
         </div>
     </div>
@@ -77,6 +72,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Nama Barang</th>
+                    <th scope="col" class="text-center">Supplier</th>
                     <th scope="col" class="text-center">Jumlah</th>
                     <th scope="col" class="text-right">Harga</th>
                     <th scope="col" class="text-right">Total</th>

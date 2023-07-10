@@ -5,7 +5,8 @@ class M_barang extends CI_Model
 {
 
     var $table           = 'tbl_barang';
-    var $column_order    =  array(null, 'kode_barang', 'nama_barang', 'brand', 'stok', 'hargal', 'active', null); //set column field database untuk datatable order
+    var $table_supplier  = 'tbl_supplier';
+    var $column_order    =  array(null, 'kode_barang', 'nama_barang', 'brand', 'stok', 'harga', 'active', null); //set column field database untuk datatable order
     var $column_search   =  array('kode_barang', 'nama_barang', 'brand', 'stok', 'harga', 'active'); //set column field database untuk datatable search
     var $order = array('kode_barang' => 'asc'); // default order
 
@@ -40,7 +41,10 @@ class M_barang extends CI_Model
     private function _get_datatables_query()
     {
 
-        $this->db->from($this->table);
+        $this->db->select('tbl_barang.id_supplier, nama_barang, kode_barang, nama_barang, stok, brand, harga, active');
+        $this->db->from('tbl_barang');
+        $this->db->join('tbl_supplier', 'tbl_barang.id_supplier = tbl_supplier.id_supplier', 'left');
+        $this->db->where('tbl_barang.id_supplier = tbl_supplier.id_supplier');
 
         $i = 0;
 
@@ -80,6 +84,7 @@ class M_barang extends CI_Model
     {
         $this->_get_datatables_query();
 
+
         if ($_POST['length'] != -1) {
             $this->db->limit($_POST['length'], $_POST['start']);
             $query = $this->db->get();
@@ -98,8 +103,45 @@ class M_barang extends CI_Model
 
     function count_all()
     {
-        $this->db->from($this->table);
+        $this->db->select('tbl_barang.id_supplier, nama_barang, kode_barang, nama_barang, brand, harga, active');
+        $this->db->from('tbl_barang');
+        $this->db->join('tbl_supplier', 'tbl_barang.id_supplier = tbl_supplier.id_supplier', 'left');
+        $this->db->where('tbl_barang.id_supplier = tbl_supplier.id_supplier');
 
         return $this->db->count_all_results();
+    }
+
+    function getSpecificSupplier($kode_barang)
+    {
+        $where = "kode_barang = '{$kode_barang}'";
+        $this->db->select('id_supplier');
+        $this->db->from('tbl_barang');
+        $this->db->where($where);
+
+        $result = $this->db->get();
+
+        if ($result->num_rows() > 0) {
+            $row = $result->row();
+            $id_supplier = $row->id_supplier;
+            return $id_supplier;
+        } else {
+            echo "No data found.";
+        }
+    }
+
+    function getItemFromSupplier($id_supplier)
+    {
+        $where = "id_supplier = '{$id_supplier}'";
+        $this->db->select('tbl_barang.kode_barang, tbl_barang.id_supplier, tbl_barang.nama_barang, tbl_barang.brand, tbl_barang.stok, tbl_barang.harga, tbl_barang.active');
+        $this->db->from('tbl_barang');
+        $this->db->where($where);
+
+        $result = $this->db->get();
+
+        if ($result->num_rows() > 0) {
+            return $result->result();
+        } else {
+            return false;
+        }
     }
 }
