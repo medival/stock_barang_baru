@@ -57,7 +57,7 @@ class Penjualan extends CI_Controller
             $this->form_validation->set_rules(
                 'pembeli',
                 'Nama Pembeli',
-                "required|min_length[3]|max_length[30]|regex_match[/^[A-Z a-z.']+$/]",
+                "required|min_length[3]|max_length[30]|regex_match[/^[A-Z a-z.0-9']+$/]",
                 array(
                     'required' => '{field} wajib diisi',
                     'min_length' => '{field} minimal 3 karakter',
@@ -208,7 +208,7 @@ class Penjualan extends CI_Controller
             $this->form_validation->set_rules(
                 'pembeli',
                 'Nama Pembeli',
-                "required|min_length[3]|max_length[30]|regex_match[/^[A-Z a-z.']+$/]",
+                "required|min_length[3]|max_length[30]|regex_match[/^[A-Z a-z.0-9']+$/]",
                 array(
                     'required' => '{field} wajib diisi',
                     'min_length' => '{field} minimal 3 karakter',
@@ -330,11 +330,11 @@ class Penjualan extends CI_Controller
             $this->form_validation->set_rules(
                 'id',
                 'Barang',
-                'required|min_length[4]|max_length[20]',
+                'required|min_length[3]|max_length[20]',
                 array(
                     'required' => '{field} wajib dipilih',
-                    'min_length' => '{field} tidak valid',
-                    'max_length' => '{field} tidak valid'
+                    'min_length' => '{field} minimal 3 karakter',
+                    'max_length' => '{field} minimal 20 karakter'
                 )
             );
 
@@ -394,7 +394,7 @@ class Penjualan extends CI_Controller
             $this->form_validation->set_rules(
                 'id',
                 'Barang',
-                'required|min_length[4]|max_length[20]',
+                'required|min_length[3]|max_length[20]',
                 array(
                     'required' => '{field} wajib dipilih',
                     'min_length' => 'Isi {field} tidak valid',
@@ -495,7 +495,7 @@ class Penjualan extends CI_Controller
                 "required|min_length[10]",
                 array(
                     'required' => '{field} tidak valid',
-                    'min_length' => 'Isi {field} tidak valid'
+                    'min_length' => '{field} minimal 10 karakter'
                 )
             );
 

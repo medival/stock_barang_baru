@@ -37,10 +37,10 @@ class Data_supplier extends CI_Controller
             $this->form_validation->set_rules(
                 'id_supplier',
                 'ID Supplier',
-                "required|min_length[3]|max_length[6]|regex_match[/^[A-Z a-z.0-9']+$/]",
+                "required|min_length[1]|max_length[6]|regex_match[/^[A-Z a-z.0-9']+$/]",
                 array(
                     'required' => '{field} wajib diisi',
-                    'min_length' => '{field} minimal 3 karakter',
+                    'min_length' => '{field} minimal 1 karakter',
                     'max_length' => '{field} maksimal 6 karakter',
                     'regex_match' => '{field} tidak valid'
                 )
@@ -75,7 +75,7 @@ class Data_supplier extends CI_Controller
             $this->form_validation->set_rules(
                 'alamat',
                 'Alamat',
-                "required|min_length[10]|max_length[255]|regex_match[/^[A-Z a-z.0-9-,']+$/]",
+                "required|min_length[5]|max_length[255]|regex_match[/^[A-Z a-z.0-9-,']+$/]",
                 array(
                     'required' => '{field} wajib diisi',
                     'min_length' => '{field} minimal 5 karakter',
@@ -126,10 +126,10 @@ class Data_supplier extends CI_Controller
             $this->form_validation->set_rules(
                 'id_supplier',
                 'ID Supplier',
-                'required|min_length[3]|max_length[6]',
+                'required|min_length[1]|max_length[6]',
                 array(
                     'required' => '{field} wajib diisi',
-                    'min_length' => '{field} min 3 karakter',
+                    'min_length' => '{field} min 1 karakter',
                     'max_length' => '{field} max 6 karakter'
                 )
             );

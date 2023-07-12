@@ -42,11 +42,11 @@ class Data_barang extends CI_Controller
             $this->form_validation->set_rules(
                 'kode',
                 'Kode Barang',
-                'required|min_length[3]|max_length[6]|is_unique[tbl_barang.kode_barang]',
+                'required|min_length[3]|max_length[10]|is_unique[tbl_barang.kode_barang]',
                 array(
                     'required' => '{field} wajib diisi',
                     'min_length' => '{field} minimal 3 karakter',
-                    'max_length' => '{field} maksimal 6 karakter',
+                    'max_length' => '{field} maksimal 20 karakter',
                     'is_unique' => 'Kode sudah terdaftar'
                 )
             );
@@ -168,7 +168,7 @@ class Data_barang extends CI_Controller
                 array(
                     'required' => '{field} wajib diisi',
                     'min_length' => '{field} minimal 3 karakter',
-                    'max_length' => '{field} maksimal 6 karakter',
+                    'max_length' => '{field} maksimal 20 karakter',
                     'is_unique' => 'Kode sudah terdaftar'
                 )
             );

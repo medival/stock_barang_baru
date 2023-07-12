@@ -308,9 +308,11 @@ class Pembelian extends CI_Controller
             $this->form_validation->set_rules(
                 'id_supplier',
                 'Supplier',
-                'required',
+                'required|min_length[1]|max_length[6]',
                 array(
                     'required' => '{field} wajib dipilih',
+                    'min_length' => '{field} minimal 1 karakter',
+                    'max_length' => '{field} maksimal 6 karakter'
                 )
             );
 
@@ -320,8 +322,8 @@ class Pembelian extends CI_Controller
                 'required|min_length[3]|max_length[20]',
                 array(
                     'required' => '{field} wajib dipilih',
-                    'min_length' => 'Isi {field} tidak valid',
-                    'max_length' => 'Isi {field} tidak valid',
+                    'min_length' => '{field} minimal 3 karakter',
+                    'max_length' => '{field} maksimal 20 karakter',
                 )
             );
 
@@ -407,9 +409,11 @@ class Pembelian extends CI_Controller
             $this->form_validation->set_rules(
                 'id_supplier',
                 'id_supplier',
-                'required',
+                'required|min_length[1]|max_length[6]',
                 array(
                     'required' => '{field} wajib dipilih',
+                    'min_length' => '{field} minimal 1 karakter',
+                    'max_length' => '{field} maksimal 6 karakter',
                 )
             );
 
