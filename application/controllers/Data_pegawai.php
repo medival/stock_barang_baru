@@ -1,9 +1,10 @@
 <?php
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Data_pegawai extends CI_Controller
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         //load library
@@ -37,7 +38,7 @@ class Data_pegawai extends CI_Controller
         $this->is_admin();
 
         //ketika button tambah data di klik, lakukan proses validasi data
-        if ($this->input->post('submit', TRUE) == 'submit') {
+        if ($this->input->post('submit', true) == 'submit') {
             //validasi input data
             $this->form_validation->set_rules(
                 'username',
@@ -76,7 +77,7 @@ class Data_pegawai extends CI_Controller
             );
 
             //cek apakah form nomor hp diisi atau tidak, jika diisi maka lakukan validasi
-            if ($this->input->post('hp', TRUE) != '') {
+            if ($this->input->post('hp', true) != '') {
                 $this->form_validation->set_rules(
                     'hp',
                     'Nomor HP',
@@ -103,7 +104,7 @@ class Data_pegawai extends CI_Controller
             );
 
             //jika data sudah valid, maka jalankan proses penyimpanan data
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
 
                 //configurasi upload
                 $config['upload_path']      = './assets/foto/';
@@ -124,8 +125,8 @@ class Data_pegawai extends CI_Controller
                     $config2['image_library']   = 'gd2';
                     $config2['source_image']    = './assets/foto/' . $foto;
                     $config2['new_image']       = './assets/foto/thumb/' . $foto;
-                    $config2['maintain_ratio']  = FALSE;
-                    $imgSize2 = $this->image_lib->get_image_properties($config2['source_image'], TRUE);
+                    $config2['maintain_ratio']  = false;
+                    $imgSize2 = $this->image_lib->get_image_properties($config2['source_image'], true);
 
                     if ($imgSize2['width'] > $imgSize2['height']) {
                         $config2['width']   = $imgSize2['height'];
@@ -148,14 +149,14 @@ class Data_pegawai extends CI_Controller
                     $foto = 'default.jpg';
                 }
 
-                $password = $this->security->xss_clean($this->input->post('password', TRUE));
+                $password = $this->security->xss_clean($this->input->post('password', true));
 
                 $simpan = [
-                    'username' => $this->security->xss_clean($this->input->post('username', TRUE)),
-                    'fullname' => $this->security->xss_clean($this->input->post('fullname', TRUE)),
+                    'username' => $this->security->xss_clean($this->input->post('username', true)),
+                    'fullname' => $this->security->xss_clean($this->input->post('fullname', true)),
                     'password' => password_hash($password, PASSWORD_DEFAULT, ['cost' => 10]),
-                    'hp' => $this->security->xss_clean($this->input->post('hp', TRUE)),
-                    'alamat' => $this->security->xss_clean($this->input->post('alamat', TRUE)),
+                    'hp' => $this->security->xss_clean($this->input->post('hp', true)),
+                    'alamat' => $this->security->xss_clean($this->input->post('alamat', true)),
                     'foto' => $foto,
                     'level' => 'pegawai'
                 ];
@@ -217,11 +218,11 @@ class Data_pegawai extends CI_Controller
         }
 
         //ketika button di klik
-        if ($this->security->xss_clean($this->input->post('submit', TRUE)) == 'submit') {
+        if ($this->security->xss_clean($this->input->post('submit', true)) == 'submit') {
             //fetch data lama pegawai
             $p = $pegawai->row();
             //cek apakah admin merubah username nya atau tidak
-            if ($this->security->xss_clean($this->input->post('username', TRUE)) == $p->username) {
+            if ($this->security->xss_clean($this->input->post('username', true)) == $p->username) {
                 $rules_username = 'required|min_length[5]|max_length[20]|regex_match[/^[A-Za-z0-9]+$/]';
             } else {
                 $rules_username = 'required|min_length[5]|max_length[20]|is_unique[tbl_user.username]|regex_match[/^[A-Za-z0-9]+$/]';
@@ -253,7 +254,7 @@ class Data_pegawai extends CI_Controller
             );
 
             //cek apakah form nomor hp diisi atau tidak, jika diisi maka lakukan validasi
-            if ($this->input->post('hp', TRUE) != '') {
+            if ($this->input->post('hp', true) != '') {
                 $this->form_validation->set_rules(
                     'hp',
                     'Nomor HP',
@@ -292,7 +293,7 @@ class Data_pegawai extends CI_Controller
             );
 
             //jika proses validasi berhasil, maka lanjutkan ke proses update data
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
                 //simpan data foto lama
                 $foto = $p->foto;
                 //configurasi upload
@@ -314,8 +315,8 @@ class Data_pegawai extends CI_Controller
                     $config2['image_library']   = 'gd2';
                     $config2['source_image']    = './assets/foto/' . $foto;
                     $config2['new_image']       = './assets/foto/thumb/' . $foto;
-                    $config2['maintain_ratio']  = FALSE;
-                    $imgSize2 = $this->image_lib->get_image_properties($config2['source_image'], TRUE);
+                    $config2['maintain_ratio']  = false;
+                    $imgSize2 = $this->image_lib->get_image_properties($config2['source_image'], true);
 
                     if ($imgSize2['width'] > $imgSize2['height']) {
                         $config2['width']   = $imgSize2['height'];
@@ -345,16 +346,16 @@ class Data_pegawai extends CI_Controller
 
                 //masukkan data ke variable array
                 $update = [
-                    'username' => $this->security->xss_clean($this->input->post('username', TRUE)),
-                    'fullname' => $this->security->xss_clean($this->input->post('fullname', TRUE)),
-                    'hp' => $this->security->xss_clean($this->input->post('hp', TRUE)),
-                    'alamat' => $this->security->xss_clean($this->input->post('alamat', TRUE)),
+                    'username' => $this->security->xss_clean($this->input->post('username', true)),
+                    'fullname' => $this->security->xss_clean($this->input->post('fullname', true)),
+                    'hp' => $this->security->xss_clean($this->input->post('hp', true)),
+                    'alamat' => $this->security->xss_clean($this->input->post('alamat', true)),
                     'foto' => $foto,
-                    'active' => $this->security->xss_clean($this->input->post('status', TRUE))
+                    'active' => $this->security->xss_clean($this->input->post('status', true))
                 ];
 
                 $where = [
-                    'id_user' => $this->security->xss_clean($this->input->post('Id', TRUE))
+                    'id_user' => $this->security->xss_clean($this->input->post('Id', true))
                 ];
                 //proses update
                 $up = $this->m_pegawai->update('tbl_user', $update, $where);
@@ -379,7 +380,7 @@ class Data_pegawai extends CI_Controller
     {
         $this->is_admin();
 
-        if ($this->input->post('submit', TRUE) == 'Submit') {
+        if ($this->input->post('submit', true) == 'Submit') {
             //validasi
             $this->form_validation->set_rules(
                 'pwUser',
@@ -413,7 +414,7 @@ class Data_pegawai extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
                 //validasi password admin
                 $whereAdmin = [
                     'id_user' => $this->session->userdata('UserID'),
@@ -428,13 +429,13 @@ class Data_pegawai extends CI_Controller
                 //fetch data admin
                 $a = $getDataAdmin->row();
 
-                $passwordUser = $this->security->xss_clean($this->input->post('pwUser', TRUE));
-                $passwordAdmin = $this->security->xss_clean($this->input->post('pwAdmin', TRUE));
+                $passwordUser = $this->security->xss_clean($this->input->post('pwUser', true));
+                $passwordAdmin = $this->security->xss_clean($this->input->post('pwAdmin', true));
                 //validasi password
                 if (password_verify($passwordAdmin, $a->password)) {
                     //lakukan update data user
                     $hashPW = password_hash($passwordUser, PASSWORD_DEFAULT, ['cost' => 10]);
-                    $idUser = $this->security->xss_clean($this->input->post('IdU', TRUE));
+                    $idUser = $this->security->xss_clean($this->input->post('IdU', true));
 
                     $updated = $this->m_pegawai->update('tbl_user', ['password' => $hashPW], ['id_user' => $idUser, 'level' => 'pegawai']);
 

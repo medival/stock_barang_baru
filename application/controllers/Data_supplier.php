@@ -1,9 +1,10 @@
 <?php
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Data_supplier extends CI_Controller
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         //load library
@@ -32,7 +33,7 @@ class Data_supplier extends CI_Controller
     {
         $this->is_admin();
         //ketika user mengklik submit
-        if ($this->input->post('submit', TRUE) == 'submit') {
+        if ($this->input->post('submit', true) == 'submit') {
             //validasi form
             $this->form_validation->set_rules(
                 'id_supplier',
@@ -58,7 +59,7 @@ class Data_supplier extends CI_Controller
                 )
             );
 
-            if ($this->input->post('hp', TRUE) != '') {
+            if ($this->input->post('hp', true) != '') {
                 $this->form_validation->set_rules(
                     'hp',
                     'Nomor Telp.',
@@ -85,12 +86,12 @@ class Data_supplier extends CI_Controller
             );
 
             //jika validasi berhasil maka lakukan proses penyimpanan
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
                 //tampung data ke variabel
-                $id = $this->security->xss_clean($this->input->post('id_supplier', TRUE));
-                $nama = $this->security->xss_clean($this->input->post('nama_supplier', TRUE));
-                $telp = $this->security->xss_clean($this->input->post('hp', TRUE));
-                $alamat = $this->security->xss_clean($this->input->post('alamat', TRUE));
+                $id = $this->security->xss_clean($this->input->post('id_supplier', true));
+                $nama = $this->security->xss_clean($this->input->post('nama_supplier', true));
+                $telp = $this->security->xss_clean($this->input->post('hp', true));
+                $alamat = $this->security->xss_clean($this->input->post('alamat', true));
 
                 $data_simpan = [
                     'id_supplier' => $id,
@@ -121,7 +122,7 @@ class Data_supplier extends CI_Controller
         $this->is_admin();
 
         //ketika user mengklik submit
-        if ($this->input->post('submit', TRUE) == 'submit') {
+        if ($this->input->post('submit', true) == 'submit') {
             //validasi form
             $this->form_validation->set_rules(
                 'id_supplier',
@@ -146,7 +147,7 @@ class Data_supplier extends CI_Controller
                 )
             );
 
-            if ($this->input->post('hp', TRUE) != '') {
+            if ($this->input->post('hp', true) != '') {
                 $this->form_validation->set_rules(
                     'hp',
                     'Nomor Telp.',
@@ -173,12 +174,12 @@ class Data_supplier extends CI_Controller
             );
 
             //jika validasi berhasil maka lakukan proses penyimpanan
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
                 //tampung data ke variabel
-                $id_supplier = $this->security->xss_clean($this->input->post('id_supplier', TRUE));
-                $nama = $this->security->xss_clean($this->input->post('nama_supplier', TRUE));
-                $telp = $this->security->xss_clean($this->input->post('hp', TRUE));
-                $alamat = $this->security->xss_clean($this->input->post('alamat', TRUE));
+                $id_supplier = $this->security->xss_clean($this->input->post('id_supplier', true));
+                $nama = $this->security->xss_clean($this->input->post('nama_supplier', true));
+                $telp = $this->security->xss_clean($this->input->post('hp', true));
+                $alamat = $this->security->xss_clean($this->input->post('alamat', true));
 
                 $data_update = [
                     'id_supplier' => $id_supplier,
@@ -232,9 +233,9 @@ class Data_supplier extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
                 //tangkap rowid
-                $id = $this->security->xss_clean($this->input->post('id', TRUE));
+                $id = $this->security->xss_clean($this->input->post('id', true));
 
                 $hapus = $this->m_supplier->delete('tbl_supplier', ['id_supplier' => $id]);
 

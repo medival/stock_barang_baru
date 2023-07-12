@@ -1,9 +1,10 @@
 <?php
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Penjualan extends CI_Controller
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         //load library
@@ -36,7 +37,7 @@ class Penjualan extends CI_Controller
         //cek login
         $this->is_login();
         // ketika button submit di klik
-        if ($this->input->post('submit', TRUE) == 'Submit') {
+        if ($this->input->post('submit', true) == 'Submit') {
             //cek apakah cart ada isinya atau kosong
             if (!$this->cart->contents()) {
                 $this->session->set_flashdata('alert', 'Anda belum memilih barang...');
@@ -66,11 +67,11 @@ class Penjualan extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
 
                 $id = 'OUT' . time();
-                $tgl = date('Y-m-d', strtotime(str_replace('/', '-', $this->security->xss_clean($this->input->post('tanggal', TRUE)))));
-                $pembeli = $this->security->xss_clean($this->input->post('pembeli', TRUE));
+                $tgl = date('Y-m-d', strtotime(str_replace('/', '-', $this->security->xss_clean($this->input->post('tanggal', true)))));
+                $pembeli = $this->security->xss_clean($this->input->post('pembeli', true));
                 $user = $this->session->userdata('UserID');
 
                 $data_penjualan = [
@@ -159,9 +160,9 @@ class Penjualan extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
                 //tangkap id
-                $id = $this->security->xss_clean($this->input->post('id', TRUE));
+                $id = $this->security->xss_clean($this->input->post('id', true));
 
                 $hapus = $this->m_penjualan->delete(['tbl_penjualan', 'tbl_detail_penjualan'], ['id_penjualan' => $id]);
 
@@ -187,7 +188,7 @@ class Penjualan extends CI_Controller
         $this->is_login();
 
         //ketika user menyimpan data
-        if ($this->input->post('submit', TRUE) == 'Submit') {
+        if ($this->input->post('submit', true) == 'Submit') {
             //cek apakah user sudah memilih barang atau belum, jika belum maka munculkan pesan kesalahan
             if (!$this->cart->contents()) {
                 $this->session->set_flashdata('alert', 'Anda belum memilih barang...');
@@ -227,11 +228,11 @@ class Penjualan extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
 
-                $idP = $this->security->xss_clean($this->input->post('idP', TRUE));
-                $tgl = date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('tanggal', TRUE))));
-                $pembeli = $this->security->xss_clean($this->input->post('pembeli', TRUE));
+                $idP = $this->security->xss_clean($this->input->post('idP', true));
+                $tgl = date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('tanggal', true))));
+                $pembeli = $this->security->xss_clean($this->input->post('pembeli', true));
 
                 $data_penjualan = [
                     'tgl_penjualan' => $tgl,
@@ -323,7 +324,7 @@ class Penjualan extends CI_Controller
     public function cari_barang_penjualan()
     {
         $this->is_login();
-        
+
         //cek apakah request berupa ajax atau bukan, jika bukan maka redirect ke home
         if ($this->input->is_ajax_request()) {
             //validasi data
@@ -338,17 +339,17 @@ class Penjualan extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
                 //ambil data
                 $where = [
-                    'kode_barang' => $this->security->xss_clean($this->input->post('id', TRUE)), 'active' => 'Y',
+                    'kode_barang' => $this->security->xss_clean($this->input->post('id', true)), 'active' => 'Y',
                 ];
                 $getBarang = $this->m_penjualan->getData('tbl_barang', $where);
                 // $getBarang = $this->m_penjualan->getData($where);
 
                 //cek jumlah data
                 if ($getBarang->num_rows() == 1) {
-                    
+
                     $barang = $getBarang->row();
                     $stok = $barang->stok;
                     //cari item di dalam cart
@@ -414,10 +415,10 @@ class Penjualan extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
                 //ambil barang sesuai kode
                 $where = [
-                    'kode_barang' => $this->security->xss_clean($this->input->post('id', TRUE)), 'active' => 'Y' // ??
+                    'kode_barang' => $this->security->xss_clean($this->input->post('id', true)), 'active' => 'Y' // ??
                 ];
 
                 $get_barang = $this->m_penjualan->getData('tbl_barang', $where);
@@ -434,7 +435,7 @@ class Penjualan extends CI_Controller
                         }
                     }
 
-                    if ($this->security->xss_clean($this->input->post('qty', TRUE)) > $stok) {
+                    if ($this->security->xss_clean($this->input->post('qty', true)) > $stok) {
 
                         $alert = '<div class="alert alert-danger" role="alert">Jumlah beli melebihi stok yang ada</div>';
 
@@ -442,7 +443,7 @@ class Penjualan extends CI_Controller
                     } else {
                         $keranjang = array(
                             'id'      => $b->kode_barang,
-                            'qty'     => $this->security->xss_clean($this->input->post('qty', TRUE)),
+                            'qty'     => $this->security->xss_clean($this->input->post('qty', true)),
                             'price'   => $b->harga,
                             'name'    => $b->nama_barang,
                             'id_supplier' => $b->id_supplier,
@@ -499,9 +500,9 @@ class Penjualan extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
                 //tangkap rowid
-                $rowid = $this->security->xss_clean($this->input->post('rowid', TRUE));
+                $rowid = $this->security->xss_clean($this->input->post('rowid', true));
                 //ambil data barang dalam cart
                 $get_item = $this->cart->get_item($rowid);
                 //hapus session
@@ -534,7 +535,7 @@ class Penjualan extends CI_Controller
 
         if ($this->input->is_ajax_request()) {
             //tangkap rowid
-            $rowid = $this->security->xss_clean($this->input->post('rowid', TRUE));
+            $rowid = $this->security->xss_clean($this->input->post('rowid', true));
 
             $get_item = $this->cart->get_item($rowid);
 
@@ -634,11 +635,11 @@ class Penjualan extends CI_Controller
                 )
             );
 
-            if ($this->form_validation->run() == TRUE) {
+            if ($this->form_validation->run() == true) {
 
                 //ambil barang sesuai kode
                 $where = [
-                    'kode_barang' => $this->security->xss_clean($this->input->post('id', TRUE))
+                    'kode_barang' => $this->security->xss_clean($this->input->post('id', true))
                 ];
 
                 $get_barang = $this->m_penjualan->getData('tbl_barang', $where);
@@ -654,15 +655,15 @@ class Penjualan extends CI_Controller
                         }
                     }
 
-                    if ($this->security->xss_clean($this->input->post('qty', TRUE)) > $stok) {
+                    if ($this->security->xss_clean($this->input->post('qty', true)) > $stok) {
 
                         $alert = '<div class="alert alert-danger" role="alert">Jumlah beli melebihi stok yang ada</div>';
 
                         $status = 'gagal';
                     } else {
                         $keranjang = array(
-                            'rowid' => $this->security->xss_clean($this->input->post('rowid', TRUE)),
-                            'qty' => $this->security->xss_clean($this->input->post('jumlah', TRUE))
+                            'rowid' => $this->security->xss_clean($this->input->post('rowid', true)),
+                            'qty' => $this->security->xss_clean($this->input->post('jumlah', true))
                         );
 
                         $this->cart->update($keranjang);
@@ -700,7 +701,7 @@ class Penjualan extends CI_Controller
         }
     }
 
-    function checkDateFormat($date)
+    public function checkDateFormat($date)
     {
         if (preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4}$/", $date)) {
             if (checkdate(substr($date, 3, 2), substr($date, 0, 2), substr($date, 6, 4))) {
