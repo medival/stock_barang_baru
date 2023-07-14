@@ -84,20 +84,18 @@ if ($this->session->flashdata('alert')) {
     <tbody>
         <?php
         $i = 1;
-        $row_pembelian = 1;
         $row_tanggal = 1;
+        $row = 1;
         if ($data->num_rows() > 0) {
             $total = 0;
 
             foreach ($data->result() as $dt) {
                 echo '<tr>';
-                if ($row_tanggal == 1) :
-                    echo '<td rowspan="' . $dt->row_tanggal . '">' . $i++ . '</td>';
-                    echo '<td rowspan="' . $dt->row_tanggal . '">' . tanggal_indo($dt->tgl_pembelian) . '</td>';
-                endif;
-                if ($row_pembelian == 1) :
-                    echo '<td rowspan="' . $dt->row_pembelian . '">' . $dt->id_pembelian . '</td>';
-                    echo '<td rowspan="' . $dt->row_pembelian . '">' . $dt->nama_supplier . '</td>';
+                if ($row == 1) :
+                    echo '<td rowspan="' . $dt->row . '">' . $i++ . '</td>';
+                    echo '<td rowspan="' . $dt->row . '">' . tanggal_indo($dt->tgl_pembelian) . '</td>';
+                    echo '<td rowspan="' . $dt->row . '">' . $dt->id_pembelian . '</td>';
+                    echo '<td rowspan="' . $dt->row . '">' . $dt->nama_supplier . '</td>';
                 endif;
                 echo '<td>' . $dt->nama_barang . '</td>';
                 echo '<td>' . $dt->brand . '</td>';
@@ -105,16 +103,11 @@ if ($this->session->flashdata('alert')) {
                 echo '<td><span class="float-left">Rp.</span><span class="float-right">' . number_format($dt->harga, 0, ',', '.') . '</span></td>';
                 echo '<td><span class="float-left">Rp.</span><span class="float-right">' . number_format(($dt->harga * $dt->qty), 0, ',', '.') . '</span></td>';
                 echo '</tr>';
-                if ($row_pembelian != $dt->row_pembelian) {
-                    $row_pembelian++;
-                } else {
-                    $row_pembelian = 1;
-                }
 
-                if ($row_tanggal < $dt->row_tanggal) {
-                    $row_tanggal++;
+                if ($row < $dt->row) {
+                    $row++;
                 } else {
-                    $row_tanggal = 1;
+                    $row = 1;
                 }
 
                 $total += ($dt->harga * $dt->qty);
