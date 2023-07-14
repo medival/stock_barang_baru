@@ -136,7 +136,7 @@ class M_laporan extends CI_Model
         $table = 'tbl_pembelian p
                     JOIN tbl_detail_pembelian dp ON(p.id_pembelian = dp.id_pembelian)
                     LEFT JOIN tbl_barang b ON(dp.id_barang = b.kode_barang)
-                    LEFT JOIN tbl_supplier s ON(p.id_supplier = s.id_supplier)';
+                    LEFT JOIN tbl_supplier s ON(b.id_supplier = s.id_supplier)';
 
         $where = ['p.tgl_pembelian >=' => $tgl1, 'p.tgl_pembelian <=' => $tgl2];
 
